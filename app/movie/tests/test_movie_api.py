@@ -179,3 +179,53 @@ class PrivateMovieApiTests(TestCase):
         self.assertEqual(genres.count(), 2)
         self.assertIn(genre1, genres)
         self.assertIn(genre2, genres)
+
+    def test_partial_update_movie(self):
+        """Test updating a movie with patch
+        """
+        movie = sample_movie(user=self.user)
+        movie.genre.add(sample_genre(user=self.user))
+        new_genre = sample_genre(user=self.user, name='Action')
+
+        payload = {
+            'title': 'Avengers: Infinity War',
+            'genre': [new_genre.id],
+            'availability': False
+        }
+        url = detail_url(movie.id)
+        self.client.patch(url, payload)
+
+        movie.refresh_from_db()
+        self.assertEqual(movie.title, payload['title'])
+        self.assertEqual(movie.availability, payload['availability'])
+        genres = movie.genre.all()
+        self.assertEqual(len(genres), 1)
+        self.assertIn(new_genre, genres)
+
+    def test_full_update_movie(self):
+        """Test updating a recipe with put
+        """
+        movie = sample_movie(user=self.user)
+        movie.genre.add(sample_genre(user=self.user))
+        payload = {
+            'title': 'Interstellar',
+            'description': 'A movie that will blow your mind',
+            'image': 'http://image.com/new_image.jpg',
+            'stock': 200,
+            'rental_price': 3.50,
+            'sale_price': 12.00,
+            'availability': False
+        }
+        url = detail_url(movie.id)
+        self.client.put(url, payload)
+
+        movie.refresh_from_db()
+        self.assertEqual(movie.title, payload['title'])
+        self.assertEqual(movie.description, payload['description'])
+        self.assertEqual(movie.image, payload['image'])
+        self.assertEqual(movie.stock, payload['stock'])
+        self.assertEqual(movie.rental_price, payload['rental_price'])
+        self.assertEqual(movie.sale_price, payload['sale_price'])
+        self.assertEqual(movie.availability, payload['availability'])
+        genre = movie.genre.all()
+        self.assertEqual(len(genre), 0)
