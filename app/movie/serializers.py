@@ -23,7 +23,7 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'description', 'genre', 'image',
+        fields = ('id', 'title', 'description', 'genre', 'link',
                   'stock', 'rental_price', 'sale_price', 'availability')
         read_only_fields = ('id',)
 
@@ -32,3 +32,13 @@ class MovieDetailSerializer(MovieSerializer):
     """Serialize a movie detail
     """
     genre = GenreSerializer(many=True, read_only=True)
+
+
+class MovieImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to movies
+    """
+
+    class Meta:
+        model = Movie
+        fields = ('id', 'image')
+        read_only_fields = ('id',)

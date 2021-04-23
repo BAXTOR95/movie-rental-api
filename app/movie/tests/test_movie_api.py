@@ -1,3 +1,8 @@
+import tempfile
+import os
+
+from PIL import Image
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -11,6 +16,12 @@ from movie.serializers import MovieSerializer, MovieDetailSerializer
 
 
 MOVIES_URL = reverse('movie:movie-list')
+
+
+def image_upload_url(movie_id):
+    """Return URL for movie image upload
+    """
+    return reverse('movie:movie-upload-image', args=[movie_id])
 
 
 def detail_url(movie_id):
@@ -223,3 +234,41 @@ class PrivateMovieApiTests(TestCase):
         self.assertEqual(movie.availability, payload['availability'])
         genre = movie.genre.all()
         self.assertEqual(len(genre), 0)
+
+
+class MovieImageUploadTests(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = get_user_model().objects.create_superuser(
+            'admin@gmail.com',
+            'testpass'
+        )
+        self.client.force_authenticate(self.user)
+        self.movie = sample_movie(user=self.user)
+
+    def tearDown(self):
+        self.movie.image.delete()
+
+    def test_upload_image_to_movie(self):
+        """Test uploading an image to movie
+        """
+        url = image_upload_url(self.movie.id)
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as ntf:
+            img = Image.new('RGB', (10, 10))
+            img.save(ntf, format='JPEG')
+            ntf.seek(0)
+            res = self.client.post(url, {'image': ntf}, format='multipart')
+
+        self.movie.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn('image', res.data)
+        self.assertTrue(os.path.exists(self.movie.image.path))
+
+    def test_upload_image_bad_request(self):
+        """Test uploading an invalid image
+        """
+        url = image_upload_url(self.movie.id)
+        res = self.client.post(url, {'image': 'notimage'}, format='multipart')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

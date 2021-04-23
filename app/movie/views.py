@@ -1,4 +1,6 @@
-from rest_framework import viewsets, mixins
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import viewsets, mixins, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import (
     IsAdminUser, BasePermission, SAFE_METHODS)
@@ -66,6 +68,8 @@ class MovieViewSet(viewsets.ModelViewSet):
         """
         if self.action == 'retrieve':
             return serializers.MovieDetailSerializer
+        elif self.action == 'upload_image':
+            return serializers.MovieImageSerializer
 
         return self.serializer_class
 
@@ -73,3 +77,25 @@ class MovieViewSet(viewsets.ModelViewSet):
         """Create a new movie
         """
         serializer.save(user=self.request.user)
+
+    @action(methods=['POST'], detail=True, url_path='upload-image')
+    def upload_image(self, request, pk=None):
+        """Upload an image to a movie
+        """
+        movie = self.get_object()
+        serializer = self.get_serializer(
+            movie,
+            data=request.data
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
