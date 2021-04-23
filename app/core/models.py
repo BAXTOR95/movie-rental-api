@@ -1,8 +1,19 @@
+import uuid
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+
+
+def movie_image_file_path(instance, filename):
+    """Generate file path for new movie image
+    """
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+
+    return os.path.join('uploads/movie/', filename)
 
 
 class UserManager(BaseUserManager):
@@ -84,8 +95,9 @@ class Movie(models.Model):
     )
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
+    link = models.CharField(max_length=255, blank=True)
     genre = models.ManyToManyField('Genre')
-    image = models.CharField(max_length=255)
+    image = models.ImageField(null=True, upload_to=movie_image_file_path)
     stock = models.IntegerField()
     rental_price = models.DecimalField(max_digits=5, decimal_places=2)
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)

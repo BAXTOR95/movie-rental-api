@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
@@ -70,7 +72,6 @@ class ModelTests(TestCase):
             user=sample_user(),
             title='Interstellar',
             description='A movie that will blow your mind',
-            image='http://image.com/image.jpg',
             stock=100,
             rental_price=2.50,
             sale_price=10.00,
@@ -78,3 +79,14 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(movie), movie.title)
+
+    @patch('uuid.uuid4')
+    def test_movie_file_name_uuid(self, mock_uuid):
+        """Test that image is save in the correct location
+        """
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.movie_image_file_path(None, 'image.jpg')
+
+        exp_path = f'uploads/movie/{uuid}.jpg'
+        self.assertEqual(file_path, exp_path)

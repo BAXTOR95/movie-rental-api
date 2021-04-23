@@ -31,7 +31,6 @@ def sample_movie(user, **params):
     defaults = {
         'title': 'Sample movie',
         'description': 'Sample description',
-        'image': 'http://image.com/image.jpg',
         'stock': 100,
         'rental_price': 2.50,
         'sale_price': 10.00,
@@ -127,7 +126,6 @@ class PrivateMovieApiTests(TestCase):
         payload = {
             'title': 'Interstellar',
             'description': 'A movie that will blow your mind',
-            'image': 'http://image.com/image.jpg',
             'stock': 100,
             'rental_price': 2.50,
             'sale_price': 10.00,
@@ -146,7 +144,6 @@ class PrivateMovieApiTests(TestCase):
         payload = {
             'title': 'Interstellar',
             'description': 'A movie that will blow your mind',
-            'image': 'http://image.com/image.jpg',
             'stock': 100,
             'rental_price': 2.50,
             'sale_price': 10.00,
@@ -165,7 +162,6 @@ class PrivateMovieApiTests(TestCase):
             'title': 'Interstellar',
             'description': 'A movie that will blow your mind',
             'genre': [genre1.id, genre2.id],
-            'image': 'http://image.com/image.jpg',
             'stock': 100,
             'rental_price': 2.50,
             'sale_price': 10.00,
@@ -210,7 +206,6 @@ class PrivateMovieApiTests(TestCase):
         payload = {
             'title': 'Interstellar',
             'description': 'A movie that will blow your mind',
-            'image': 'http://image.com/new_image.jpg',
             'stock': 200,
             'rental_price': 3.50,
             'sale_price': 12.00,
@@ -222,7 +217,6 @@ class PrivateMovieApiTests(TestCase):
         movie.refresh_from_db()
         self.assertEqual(movie.title, payload['title'])
         self.assertEqual(movie.description, payload['description'])
-        self.assertEqual(movie.image, payload['image'])
         self.assertEqual(movie.stock, payload['stock'])
         self.assertEqual(movie.rental_price, payload['rental_price'])
         self.assertEqual(movie.sale_price, payload['sale_price'])
