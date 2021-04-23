@@ -7,15 +7,12 @@ from core.models import Genre
 from movie import serializers
 
 
-class GenreViewSet(viewsets.GenericViewSet,
-                   mixins.ListModelMixin,
-                   mixins.CreateModelMixin):
-    """Manage Genre in the database
+class BaseMovieAttrViewSet(viewsets.GenericViewSet,
+                           mixins.ListModelMixin,
+                           mixins.CreateModelMixin):
+    """Base viewset for movie attributes
     """
     authentication_classes = (JWTAuthentication,)
-    permission_classes = (IsAdminUser,)
-    queryset = Genre.objects.all()
-    serializer_class = serializers.GenreSerializer
 
     def get_queryset(self):
         """Return objects for the current authenticated user only
@@ -23,6 +20,14 @@ class GenreViewSet(viewsets.GenericViewSet,
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
     def perform_create(self, serializer):
-        """Create a new genre
+        """Create a new object
         """
         serializer.save(user=self.request.user)
+
+
+class GenreViewSet(BaseMovieAttrViewSet):
+    """Manage Genre in the database
+    """
+    permission_classes = (IsAdminUser,)
+    queryset = Genre.objects.all()
+    serializer_class = serializers.GenreSerializer
