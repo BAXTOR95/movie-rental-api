@@ -62,3 +62,19 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(genre), genre.name)
+
+    def test_movie_str(self):
+        """Test the movie string representation
+        """
+        movie = models.Movie.objects.create(
+            user=sample_user(),
+            title='Interstellar',
+            description='A movie that will blow your mind',
+            image='http://image.com/image.jpg',
+            stock=100,
+            rental_price=2.50,
+            sale_price=10.00,
+            availability=True
+        )
+
+        self.assertEqual(str(movie), movie.title)

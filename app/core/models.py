@@ -73,3 +73,23 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Movie(models.Model):
+    """Movie object
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    genre = models.ManyToManyField('Genre')
+    image = models.CharField(max_length=255)
+    stock = models.IntegerField()
+    rental_price = models.DecimalField(max_digits=5, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=5, decimal_places=2)
+    availability = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
