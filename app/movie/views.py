@@ -68,3 +68,8 @@ class MovieViewSet(viewsets.ModelViewSet):
             return serializers.MovieDetailSerializer
 
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Create a new movie
+        """
+        serializer.save(user=self.request.user)

@@ -120,3 +120,62 @@ class PrivateMovieApiTests(TestCase):
 
         serializer = MovieDetailSerializer(movie)
         self.assertEqual(res.data, serializer.data)
+
+    def test_create_basic_movie(self):
+        """Test creating movie
+        """
+        payload = {
+            'title': 'Interstellar',
+            'description': 'A movie that will blow your mind',
+            'image': 'http://image.com/image.jpg',
+            'stock': 100,
+            'rental_price': 2.50,
+            'sale_price': 10.00,
+            'availability': True
+        }
+        res = self.client.post(MOVIES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        movie = Movie.objects.get(id=res.data['id'])
+        for key in payload.keys():
+            self.assertEqual(payload[key], getattr(movie, key))
+
+    def test_create_basic_movie_no_admin(self):
+        """Test creating movie with a non admin user
+        """
+        payload = {
+            'title': 'Interstellar',
+            'description': 'A movie that will blow your mind',
+            'image': 'http://image.com/image.jpg',
+            'stock': 100,
+            'rental_price': 2.50,
+            'sale_price': 10.00,
+            'availability': True
+        }
+        res = self.client_nonadmin.post(MOVIES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_movie_with_genre(self):
+        """Test creating a movie with genre
+        """
+        genre1 = sample_genre(user=self.user, name='Sci-fy')
+        genre2 = sample_genre(user=self.user, name='Suspense')
+        payload = {
+            'title': 'Interstellar',
+            'description': 'A movie that will blow your mind',
+            'genre': [genre1.id, genre2.id],
+            'image': 'http://image.com/image.jpg',
+            'stock': 100,
+            'rental_price': 2.50,
+            'sale_price': 10.00,
+            'availability': True
+        }
+        res = self.client.post(MOVIES_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        movie = Movie.objects.get(id=res.data['id'])
+        genres = movie.genre.all()
+        self.assertEqual(genres.count(), 2)
+        self.assertIn(genre1, genres)
+        self.assertIn(genre2, genres)
