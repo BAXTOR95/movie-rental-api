@@ -26,3 +26,9 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'genre', 'image',
                   'stock', 'rental_price', 'sale_price', 'availability')
         read_only_fields = ('id',)
+
+
+class MovieDetailSerializer(MovieSerializer):
+    """Serialize a movie detail
+    """
+    genre = GenreSerializer(many=True, read_only=True)

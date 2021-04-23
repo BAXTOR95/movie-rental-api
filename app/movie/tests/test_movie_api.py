@@ -5,12 +5,24 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Movie
+from core.models import Movie, Genre
 
-from movie.serializers import MovieSerializer
+from movie.serializers import MovieSerializer, MovieDetailSerializer
 
 
 MOVIES_URL = reverse('movie:movie-list')
+
+
+def detail_url(movie_id):
+    """Return movie detail URL
+    """
+    return reverse('movie:movie-detail', args=[movie_id])
+
+
+def sample_genre(user, name='Sample Genre'):
+    """Create and return a sample genre
+    """
+    return Genre.objects.create(user=user, name=name)
 
 
 def sample_movie(user, **params):
@@ -95,4 +107,16 @@ class PrivateMovieApiTests(TestCase):
         serializer = MovieSerializer(movies, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 2)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_view_movie_detail(self):
+        """Test viewing a movie detail
+        """
+        movie = sample_movie(user=self.user)
+        movie.genre.add(sample_genre(user=self.user))
+
+        url = detail_url(movie.id)
+        res = self.client.get(url)
+
+        serializer = MovieDetailSerializer(movie)
         self.assertEqual(res.data, serializer.data)

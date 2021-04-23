@@ -26,4 +26,4 @@ services:
     environment:
       - POSTGRES_DB=app
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=supersecretpassword #should later be replaced by an encrypted variable
+      - POSTGRES_PASSWORD=supersecretpassword # should later be replaced by an encrypted variable

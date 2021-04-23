@@ -60,3 +60,11 @@ class MovieViewSet(viewsets.ModelViewSet):
         """Retrieve the movies for all users
         """
         return self.queryset.all()
+
+    def get_serializer_class(self):
+        """Return appropriate serializer class
+        """
+        if self.action == 'retrieve':
+            return serializers.MovieDetailSerializer
+
+        return self.serializer_class
