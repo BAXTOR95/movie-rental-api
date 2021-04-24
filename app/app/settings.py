@@ -152,10 +152,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAdminUser',
-    #     'rest_framework.permissions.BasePermission',
-    # ),
 }
 
 # Simple JWT settings
@@ -164,4 +160,38 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=12),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
+}
+
+# Logging settings
+# A sample logging configuration.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} [{asctime}] {process:d} {thread:d} {message}',
+            'style': '{',
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'app.log'),
+            'formatter': 'verbose',
+            'maxBytes': 1024*1024*15,  # 15MB
+            'backupCount': 10
+        },
+    },
+    'loggers': {
+        'movie.views': {
+            'handlers': ['file', ],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }

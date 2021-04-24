@@ -1,3 +1,4 @@
+import logging
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
@@ -8,6 +9,9 @@ from rest_framework.permissions import (
 from core.models import Genre, Movie
 
 from movie import serializers
+
+
+logger = logging.getLogger(__name__)
 
 
 class IsAdminOrReadOnly(BasePermission):
@@ -112,7 +116,20 @@ class MovieViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         """Update a new movie
         """
-        serializer.save(user=self.request.user)
+        title = self.request.data.get('title')
+        rental_price = self.request.data.get('rental_price')
+        sale_price = self.request.data.get('sale_price')
+        instance = serializer.save(user=self.request.user)
+        id = instance.id
+
+        if title:
+            logger.debug(f'Updated title of movie id={id} to {title}')
+        if rental_price:
+            logger.debug(
+                f'Updated rental_price of movie id={id} to {rental_price}')
+        if sale_price:
+            logger.debug(
+                f'Updated sale_price of movie id={id} to {sale_price}')
 
     @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
