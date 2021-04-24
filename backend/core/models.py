@@ -23,6 +23,7 @@ class UserManager(BaseUserManager):
 
         Args:
             email (string): User email
+            name (string): User name
             password (string, optional): User Password. Defaults to None.
 
         Returns:
@@ -45,6 +46,7 @@ class UserManager(BaseUserManager):
 
         Args:
             email (string): User email
+            name (string): User name
             password (string): User Password
 
         Returns:
@@ -69,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = 'name'
+    REQUIRED_FIELDS = ('name',)
 
     def get_full_name(self):
         return self.name

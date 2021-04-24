@@ -75,6 +75,7 @@ class PrivateMovieApiTests(TestCase):
         self.client = APIClient()
         self.user = get_user_model().objects.create_superuser(
             'admin@gmail.com',
+            'Admin User',
             'testpass'
         )
         self.client.force_authenticate(self.user)
@@ -83,6 +84,7 @@ class PrivateMovieApiTests(TestCase):
         self.client_nonadmin = APIClient()
         self.user_nonadmin = get_user_model().objects.create_user(
             'test@gmail.com',
+            'Normal User',
             'testpass'
         )
         self.client_nonadmin.force_authenticate(self.user_nonadmin)
@@ -119,6 +121,7 @@ class PrivateMovieApiTests(TestCase):
         """
         user2 = get_user_model().objects.create_superuser(
             'admin2@gmail.com',
+            'Admin User',
             'password123'
         )
         sample_movie(user=user2)
@@ -300,6 +303,7 @@ class MovieImageUploadTests(TestCase):
         self.client = APIClient()
         self.user = get_user_model().objects.create_superuser(
             'admin@gmail.com',
+            'Admin User',
             'testpass'
         )
         self.client.force_authenticate(self.user)

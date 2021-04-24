@@ -1,9 +1,9 @@
 {
     "python.analysis.extraPaths": [
-        "./app",
-        "./core",
-        "./user",
-        "./movie"
+        "./backend/app",
+        "./backend/core",
+        "./backend/user",
+        "./backend/movie"
     ],
     "git.ignoreLimitWarning": true
 }

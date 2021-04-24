@@ -43,13 +43,13 @@ class PrivateGenreApiTests(TestCase):
     def setUp(self):
         # Set Up Admin user
         self.user = create_superuser(
-            email='admin@gmail.com', password='password123')
+            email='admin@gmail.com', name='Admin User', password='password123')
         self.client = APIClient()
         self.client.force_authenticate(self.user)
 
         # Set Up Normal user
         self.user_nonadmin = create_user(
-            email='test@gmail.com', password='password123')
+            email='test@gmail.com', name='Normal User', password='password123')
         self.client_nonadmin = APIClient()
         self.client_nonadmin.force_authenticate(self.user_nonadmin)
 
@@ -81,6 +81,7 @@ class PrivateGenreApiTests(TestCase):
         """
         user2 = get_user_model().objects.create_superuser(
             'otheradmin@gmail.com',
+            'Admin User',
             'testpass'
         )
         Genre.objects.create(user=user2, name='Romantic')
