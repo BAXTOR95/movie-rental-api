@@ -11,7 +11,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Movie, Genre
-
 from movie.serializers import MovieSerializer, MovieDetailSerializer
 
 
@@ -100,6 +99,20 @@ class PrivateMovieApiTests(TestCase):
         serializer = MovieSerializer(movies, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_retrieve_movies_nonadmin(self):
+        """Test retrieving a list of movies as non admin user
+        """
+        movie1 = sample_movie(user=self.user)
+        movie2 = sample_movie(user=self.user, availability=False)
+
+        res = self.client_nonadmin.get(MOVIES_URL)
+
+        serializer1 = MovieSerializer(movie1)
+        serializer2 = MovieSerializer(movie2)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertNotIn(serializer2.data, res.data)
 
     def test_movies_not_limited_to_user(self):
         """Retrieving movies for all users
@@ -197,7 +210,8 @@ class PrivateMovieApiTests(TestCase):
         payload = {
             'title': 'Avengers: Infinity War',
             'genre': [new_genre.id],
-            'availability': False
+            'availability': False,
+            'link': 'http://www.something.com/'
         }
         url = detail_url(movie.id)
         self.client.patch(url, payload)
@@ -205,6 +219,7 @@ class PrivateMovieApiTests(TestCase):
         movie.refresh_from_db()
         self.assertEqual(movie.title, payload['title'])
         self.assertEqual(movie.availability, payload['availability'])
+        self.assertEqual(movie.link, payload['link'])
         genres = movie.genre.all()
         self.assertEqual(len(genres), 1)
         self.assertIn(new_genre, genres)
@@ -234,6 +249,49 @@ class PrivateMovieApiTests(TestCase):
         self.assertEqual(movie.availability, payload['availability'])
         genre = movie.genre.all()
         self.assertEqual(len(genre), 0)
+
+    def test_filter_movies_by_genre(self):
+        """Test returning movies with specific genre
+        """
+        movie1 = sample_movie(user=self.user, title='Interstellar')
+        movie2 = sample_movie(user=self.user, title='The Great Gatsby')
+        genre1 = sample_genre(user=self.user, name='Sci-fy')
+        genre2 = sample_genre(user=self.user, name='Suspense')
+        movie1.genre.add(genre1)
+        movie2.genre.add(genre2)
+        movie3 = sample_movie(user=self.user, title='Avengers: Infinity War')
+
+        res = self.client.get(
+            MOVIES_URL,
+            {'genre': f'{genre1.id}, {genre2.id}'}
+        )
+
+        serializer1 = MovieSerializer(movie1)
+        serializer2 = MovieSerializer(movie2)
+        serializer3 = MovieSerializer(movie3)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
+
+    def test_filter_movies_by_availability(self):
+        """Test returning movies with specific Availability
+        """
+        movie1 = sample_movie(user=self.user, title='Interstellar')
+        movie2 = sample_movie(user=self.user, title='The Great Gatsby')
+        movie3 = sample_movie(
+            user=self.user, title='Avengers: Infinity War', availability=False)
+
+        res = self.client.get(
+            MOVIES_URL,
+            {'availability': True}
+        )
+
+        serializer1 = MovieSerializer(movie1)
+        serializer2 = MovieSerializer(movie2)
+        serializer3 = MovieSerializer(movie3)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
 
 
 class MovieImageUploadTests(TestCase):

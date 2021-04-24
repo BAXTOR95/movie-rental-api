@@ -58,10 +58,32 @@ class MovieViewSet(viewsets.ModelViewSet):
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAdminOrReadOnly,)
 
+    def _params_to_ints(self, qs):
+        """Convert a list of string IDs to a list of integers
+
+        Args:
+            qs (list): Query String
+        """
+        return [int(str_id) for str_id in qs.split(',')]
+
     def get_queryset(self):
         """Retrieve the movies for all users
         """
-        return self.queryset.all()
+        genre = self.request.query_params.get('genre')
+        availability = self.request.query_params.get('availability')
+        queryset = self.queryset
+        is_staff = self.request.user.is_staff
+        if is_staff and genre:
+            genre_ids = self._params_to_ints(genre)
+            queryset = queryset.filter(genre__id__in=genre_ids)
+        if is_staff and availability:
+            queryset = queryset.filter(availability=availability.capitalize())
+
+        # only admin users can view all movies, available or not
+        if is_staff:
+            return queryset.all()
+        else:
+            return queryset.filter(availability=True)
 
     def get_serializer_class(self):
         """Return appropriate serializer class
@@ -75,6 +97,11 @@ class MovieViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new movie
+        """
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        """Update a new movie
         """
         serializer.save(user=self.request.user)
 
