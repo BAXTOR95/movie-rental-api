@@ -5,7 +5,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Genre
+from core.models import Genre, Movie
 
 from movie.serializers import GenreSerializer
 
@@ -124,3 +124,56 @@ class PrivateGenreApiTests(TestCase):
         res = self.client.post(GENRE_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_retrieve_genre_assigned_to_movies(self):
+        """Test filtering genres by those assigned to movies
+        """
+        genre1 = Genre.objects.create(user=self.user, name='Sci-fy')
+        genre2 = Genre.objects.create(user=self.user, name='Romance')
+        movie = Movie.objects.create(
+            user=self.user,
+            title='Interstellar',
+            description='A movie that will blow your mind',
+            stock=100,
+            rental_price=2.50,
+            sale_price=10.00,
+            availability=True
+        )
+        movie.genre.add(genre1)
+
+        res = self.client.get(GENRE_URL, {'assigned_only': 1})
+
+        serializer1 = GenreSerializer(genre1)
+        serializer2 = GenreSerializer(genre2)
+        self.assertIn(serializer1.data, res.data)
+        self.assertNotIn(serializer2.data, res.data)
+
+    def test_retrieve_genre_assigned_unique(self):
+        """Test filtering genres by assigned returns unique items
+        """
+        genre = Genre.objects.create(user=self.user, name='Sci-fy')
+        Genre.objects.create(user=self.user, name='Romance')
+        movie1 = Movie.objects.create(
+            user=self.user,
+            title='Interstellar',
+            description='A movie that will blow your mind',
+            stock=100,
+            rental_price=2.50,
+            sale_price=10.00,
+            availability=True
+        )
+        movie1.genre.add(genre)
+        movie2 = Movie.objects.create(
+            user=self.user,
+            title='Inception',
+            description='A movie that will blow your mind',
+            stock=100,
+            rental_price=2.50,
+            sale_price=10.00,
+            availability=True
+        )
+        movie2.genre.add(genre)
+
+        res = self.client.get(GENRE_URL, {'assigned_only': 1})
+
+        self.assertEqual(len(res.data), 1)
