@@ -8,6 +8,8 @@ from rest_framework import status
 
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
+TOKEN_REFRESH_URL = reverse('user:token_refresh')
+LOGOUT_URL = reverse('user:logout')
 ME_URL = reverse('user:me')
 
 
@@ -67,6 +69,7 @@ class PublicUserApiTests(TestCase):
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertIn('access', res.data)
+        self.assertIn('refresh', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_create_token_invalid_credentials(self):
@@ -77,6 +80,7 @@ class PublicUserApiTests(TestCase):
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('access', res.data)
+        self.assertNotIn('refresh', res.data)
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_token_no_user(self):
@@ -86,6 +90,7 @@ class PublicUserApiTests(TestCase):
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('access', res.data)
+        self.assertNotIn('refresh', res.data)
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_token_missing_field(self):
@@ -93,6 +98,7 @@ class PublicUserApiTests(TestCase):
         """
         res = self.client.post(TOKEN_URL, {'email': 'one', 'password': ''})
         self.assertNotIn('access', res.data)
+        self.assertNotIn('refresh', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_retrieve_user_unauthorized(self):
@@ -145,3 +151,25 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(self.user.name, payload['name'])
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_refresh_token(self):
+        """Test that token is refreshed
+        """
+        payload = {'email': 'test2@gmail.com', 'password': 'testpass'}
+        create_user(**payload)
+        res_token = self.client.post(TOKEN_URL, payload)
+        refresh = res_token.data['refresh']
+        res_refresh = self.client.post(TOKEN_REFRESH_URL, {'refresh': refresh})
+        self.assertIn('refresh', res_refresh.data)
+        self.assertIn('access', res_refresh.data)
+        self.assertEqual(res_refresh.status_code, status.HTTP_200_OK)
+
+    def test_logout_user(self):
+        """Test that user is logged out successfully
+        """
+        payload = {'email': 'test2@gmail.com', 'password': 'testpass'}
+        create_user(**payload)
+        res_token = self.client.post(TOKEN_URL, payload)
+        refresh = res_token.data['refresh']
+        res_logout = self.client.post(LOGOUT_URL, {'refresh': refresh})
+        self.assertEqual(res_logout.status_code, status.HTTP_205_RESET_CONTENT)

@@ -28,3 +28,9 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
 
         return user
+
+
+class LogoutSerializer(serializers.Serializer):
+    """Serializer for loging out users
+    """
+    refresh = serializers.CharField()
