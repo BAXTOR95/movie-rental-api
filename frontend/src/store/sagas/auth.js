@@ -32,11 +32,61 @@ export function* authUserSaga(action) {
         yield put(actions.authSuccess(response.data.access, response.data.refresh, action.rememberMe));
         yield put(actions.authLoadUser());
     } catch (error) {
-        yield call([ localStorage, 'removeItem' ], 'access');
-        yield call([ localStorage, 'removeItem' ], 'refresh');
-        yield call([ localStorage, 'removeItem' ], 'rememberMe');
+        yield put(actions.logout());
         yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
         yield put(actions.authFail(error.response.data.detail));
+    };
+};
+
+export function* authUserSignUpSaga(action) {
+    yield put(actions.authSignUpStart());
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    const body = JSON.stringify({
+        email: action.email,
+        name: action.name,
+        password: action.password,
+        re_password: action.re_password
+    });
+    const url = '/auth/users/';
+
+    try {
+        let response = yield axios.post(url, body, config);
+        yield put(actions.authSignUpSuccess(response.data));
+        yield put(actions.enqueueSnackbar(getSnackbarData('Check your email to activate your account!', 'success')));
+    } catch (error) {
+        yield put(actions.logout());
+        if (error.response.data.email) {
+            yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.email[ 0 ], 'error')));
+        } else {
+            yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
+        }
+        yield put(actions.authSignUpFail(error.response.data.detail));
+    };
+};
+
+export function* authUserActivationSaga(action) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    const body = JSON.stringify({
+        uid: action.uid,
+        token: action.token,
+    });
+    const url = '/auth/users/activation/';
+
+    try {
+        yield axios.post(url, body, config);
+        yield put(actions.authUserActivationSuccess());
+        yield put(actions.enqueueSnackbar(getSnackbarData('Account activated!', 'success')));
+    } catch (error) {
+        yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
+        yield put(actions.authUserActivationFail(error.response.data.detail));
     };
 };
 
@@ -118,9 +168,11 @@ export function* authPasswordResetSaga(action) {
 
     try {
         yield axios.post('/auth/users/reset_password/', body, config);
+        yield put(actions.enqueueSnackbar(getSnackbarData('Check your email to confirm password reset!', 'success')));
         yield put(actions.authPasswordResetSuccess());
     } catch (error) {
         yield put(actions.authPasswordResetFail());
+        yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
     };
 };
 
@@ -140,7 +192,9 @@ export function* authPasswordResetConfirmSaga(action) {
     try {
         yield axios.post('/auth/users/reset_password_confirm/', body, config);
         yield put(actions.authPasswordResetConfirmSuccess());
+        yield put(actions.enqueueSnackbar(getSnackbarData('Password reset successful!', 'success')));
     } catch (error) {
         yield put(actions.authPasswordResetConfirmFail());
-    }
-}
+        yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
+    };
+};

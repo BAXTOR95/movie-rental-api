@@ -22,6 +22,57 @@ export const authFail = (error) => {
     };
 };
 
+export const authUserSignUp = (email, name, password, re_password) => {
+    return {
+        type: actionTypes.AUTH_USER_SIGNUP,
+        email: email,
+        name: name,
+        password: password,
+        re_password: re_password,
+    };
+};
+
+export const authSignUpStart = () => {
+    return {
+        type: actionTypes.AUTH_SIGNUP_START
+    };
+};
+
+export const authSignUpSuccess = (payload) => {
+    return {
+        type: actionTypes.AUTH_SIGNUP_SUCCESS,
+        payload: payload
+    };
+};
+
+export const authSignUpFail = (error) => {
+    return {
+        type: actionTypes.AUTH_SIGNUP_FAIL,
+        error: error
+    };
+};
+
+export const authUserActivation = (uid, token) => {
+    return {
+        type: actionTypes.AUTH_USER_ACTIVATION,
+        uid: uid,
+        token: token
+    };
+};
+
+export const authUserActivationSuccess = () => {
+    return {
+        type: actionTypes.AUTH_SIGNUP_SUCCESS
+    };
+};
+
+export const authUserActivationFail = (error) => {
+    return {
+        type: actionTypes.AUTH_SIGNUP_FAIL,
+        error: error
+    };
+};
+
 export const authUserLoadedSuccess = (payload) => {
     return {
         type: actionTypes.AUTH_USER_LOADED_SUCCESS,

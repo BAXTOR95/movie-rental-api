@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Avatar,
     Button,
@@ -60,9 +60,8 @@ const Auth = props => {
     const classes = useStyles();
 
     const {
-        authRedirectPath,
         onAuth,
-        onSetAuthRedirectPath,
+        onAuthUserSignUp,
         onAuthRememberMe,
         rememberMe,
         loading,
@@ -124,12 +123,7 @@ const Auth = props => {
     });
 
     const [ isSignup, setIsSignup ] = useState(true);
-
-    useEffect(() => {
-        if (authRedirectPath !== '/') {
-            onSetAuthRedirectPath();
-        }
-    }, [ authRedirectPath, onSetAuthRedirectPath ]);
+    const [ accountCreated, setAccountCreated ] = useState(false);
 
     const inputChangedHandler = (event, controlName) => {
         const updatedControls = updateObject(controls, {
@@ -142,13 +136,50 @@ const Auth = props => {
         setControls(updatedControls);
     };
 
+    const resetFormValuesHandler = () => {
+        const updatedControls = updateObject(controls, {
+            email: updateObject(controls.email, {
+                value: '',
+                valid: false,
+                touched: false
+            }),
+            name: updateObject(controls.name, {
+                value: '',
+                valid: false,
+                touched: false
+            }),
+            password: updateObject(controls.password, {
+                value: '',
+                valid: false,
+                touched: false
+            }),
+            re_password: updateObject(controls.re_password, {
+                value: '',
+                valid: false,
+                touched: false
+            })
+        });
+        setControls(updatedControls);
+    }
+
     const checkBoxChangedHandler = (event) => {
         onAuthRememberMe(event.target.checked);
     }
 
     const submitHandler = (event) => {
         event.preventDefault();
-        if (!isSignup) onAuth(controls.email.value, controls.password.value, rememberMe);
+        if (!isSignup) {
+            onAuth(controls.email.value, controls.password.value, rememberMe);
+        } else if (controls.password.value === controls.re_password.value) {
+            onAuthUserSignUp(
+                controls.email.value,
+                controls.name.value,
+                controls.password.value,
+                controls.re_password.value
+            );
+            setAccountCreated(true);
+        }
+        resetFormValuesHandler();
     };
 
     const switchAuthModeHandler = () => {
@@ -163,54 +194,57 @@ const Auth = props => {
         });
     };
 
+    let form_fields = fromElementsArray.map(formElement => {
+        if (isSignup) {
+            return (
+                <TextField
+                    key={ formElement.id }
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    name={ formElement.id }
+                    label={ formElement.config.elementConfig.placeholder }
+                    type={ formElement.config.elementConfig.type }
+                    id={ formElement.id }
+                    error={ !formElement.config.valid && formElement.config.touched }
+                    onChange={ (event) => inputChangedHandler(event, formElement.id) }
+                />
+            );
+        } else if ([ 'email', 'password' ].includes(formElement.id) && !isSignup) {
+            return (
+                <TextField
+                    key={ formElement.id }
+                    variant='outlined'
+                    margin='normal'
+                    required
+                    fullWidth
+                    name={ formElement.id }
+                    label={ formElement.config.elementConfig.placeholder }
+                    type={ formElement.config.elementConfig.type }
+                    id={ formElement.id }
+                    error={ !formElement.config.valid && formElement.config.touched }
+                    onChange={ (event) => inputChangedHandler(event, formElement.id) }
+                />
+            );
+        } else {
+            return null;
+        }
+    });
+
     let form = (
         <React.Fragment>
+            {form_fields }
             {
-                fromElementsArray.map(formElement => {
-                    if (isSignup) {
-                        return (
-                            <TextField
-                                key={ formElement.id }
-                                variant='outlined'
-                                margin='normal'
-                                required
-                                fullWidth
-                                name={ formElement.id }
-                                label={ formElement.config.elementConfig.placeholder }
-                                type={ formElement.config.elementConfig.type }
-                                id={ formElement.id }
-                                error={ !formElement.config.valid && formElement.config.touched }
-                                onChange={ (event) => inputChangedHandler(event, formElement.id) }
-                            />
-                        );
-                    } else if ([ 'email', 'password' ].includes(formElement.id) && !isSignup) {
-                        return (
-                            <TextField
-                                key={ formElement.id }
-                                variant='outlined'
-                                margin='normal'
-                                required
-                                fullWidth
-                                name={ formElement.id }
-                                label={ formElement.config.elementConfig.placeholder }
-                                type={ formElement.config.elementConfig.type }
-                                id={ formElement.id }
-                                error={ !formElement.config.valid && formElement.config.touched }
-                                onChange={ (event) => inputChangedHandler(event, formElement.id) }
-                            />
-                        );
-                    } else {
-                        return null;
-                    }
-                })
+                !isSignup ?
+                    <FormControlLabel
+                        control={ <Checkbox value='remember' color='primary' /> }
+                        label='Remember me'
+                        onChange={ checkBoxChangedHandler }
+                    /> : null
             }
-            <FormControlLabel
-                control={ <Checkbox value='remember' color='primary' /> }
-                label='Remember me'
-                onChange={ checkBoxChangedHandler }
-            />
         </React.Fragment>
-    );
+    )
 
     if (loading) {
         form = (
@@ -220,10 +254,12 @@ const Auth = props => {
         )
     }
 
-
-    let authRedirect = null;
     if (isAuthenticated) {
-        authRedirect = <Redirect to={ authRedirectPath } />
+        return <Redirect to='/' />
+    }
+
+    if (accountCreated) {
+        return <Redirect to='/' />
     }
 
     return (
@@ -239,7 +275,9 @@ const Auth = props => {
                         <Typography component='h1' variant='h5'>
                             { isSignup ? 'Sign Up' : 'Sign In' }
                         </Typography>
-                        { authRedirect }
+                        <Typography component='h1' variant='h6'>
+                            { isSignup ? 'Create your account' : 'Sign into your Account' }
+                        </Typography>
                         <form className={ classes.form } onSubmit={ submitHandler }>
                             { form }
                             <Button
@@ -253,9 +291,13 @@ const Auth = props => {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <LinkRouter to='/reset-password' variant='body2'>
-                                        Forgot password?
-                                    </LinkRouter>
+                                    {
+                                        !isSignup ?
+                                            <LinkRouter to='/reset-password' variant='body2'>
+                                                Forgot password?
+                                            </LinkRouter> :
+                                            null
+                                    }
                                 </Grid>
                                 <Grid item>
                                     <Link href='#' variant='body2' onClick={ switchAuthModeHandler }>
@@ -277,7 +319,6 @@ const mapStateToProps = state => {
         loading: state.auth.loading,
         error: state.auth.error,
         isAuthenticated: state.auth.isAuthenticated,
-        authRedirectPath: state.auth.authRedirectPath,
         rememberMe: state.auth.rememberMe
     };
 };
@@ -285,8 +326,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, rememberMe) => dispatch(actions.auth(email, password, rememberMe)),
+        onAuthUserSignUp: (email, name, password, re_password) => dispatch(actions.authUserSignUp(email, name, password, re_password)),
         onAuthRememberMe: (rememberMe) => dispatch(actions.authRememberMe(rememberMe)),
-        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
     };
 };
 

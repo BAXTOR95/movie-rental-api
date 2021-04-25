@@ -7,6 +7,10 @@ export {
     authStart,
     authSuccess,
     authFail,
+    authUserSignUp,
+    authSignUpStart,
+    authSignUpSuccess,
+    authSignUpFail,
     authUserLoadedSuccess,
     authUserLoadedFail,
     authLoadUser,
@@ -16,7 +20,10 @@ export {
     authPasswordResetConfirmSuccess,
     authPasswordResetFail,
     authPasswordReset,
-    authPasswordResetConfirm
+    authPasswordResetConfirm,
+    authUserActivation,
+    authUserActivationSuccess,
+    authUserActivationFail
 } from './auth';
 
 export {

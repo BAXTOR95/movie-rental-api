@@ -38,6 +38,41 @@ const authFail = (state, action) => {
     });
 };
 
+const authSignUpStart = (state, action) => {
+    return updateObject(state, { error: null, loading: true });
+};
+
+const authSignUpSuccess = (state, action) => {
+    return updateObject(state, {
+        user: action.payload,
+        error: null,
+        loading: false,
+        isAuthenticated: false
+    });
+};
+
+const authSignUpFail = (state, action) => {
+    return updateObject(state, {
+        access: null,
+        refresh: null,
+        error: action.error,
+        loading: false,
+        isAuthenticated: false,
+        user: null
+    });
+};
+
+const authUserActivationFail = (state, action) => {
+    return updateObject(state, {
+        access: null,
+        refresh: null,
+        error: action.error,
+        loading: false,
+        isAuthenticated: false,
+        user: null
+    });
+};
+
 const authUserLoadedSuccess = (state, action) => {
     return updateObject(state, {
         user: action.payload
@@ -76,12 +111,16 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.AUTH_START: return authStart(state, action);
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
+        case actionTypes.AUTH_FAIL: return authFail(state, action);
+        case actionTypes.AUTH_SIGNUP_START: return authSignUpStart(state, action);
+        case actionTypes.AUTH_SIGNUP_SUCCESS: return authSignUpSuccess(state, action);
+        case actionTypes.AUTH_SIGNUP_FAIL: return authSignUpFail(state, action);
         case actionTypes.AUTH_USER_LOADED_SUCCESS: return authUserLoadedSuccess(state, action);
         case actionTypes.AUTH_USER_LOADED_FAIL: return authUserLoadedFail(state, action);
-        case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
         case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state, action);
         case actionTypes.AUTH_REMEMBER_ME: return authRememberMe(state, action);
+        case actionTypes.AUTH_USER_ACTIVATION_FAIL: return authUserActivationFail(state, action);
         default:
             return state;
     };
