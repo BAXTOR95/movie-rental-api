@@ -71,24 +71,24 @@ const App = props => {
 
   let routes = (
     <Switch>
-      <Route exact path="/" component={ Movies } />
-      <Route exact path="/auth" render={ (props) => <Auth { ...props } /> } />
-      <Route exact path="/logout" component={ Logout } />
-      <Route exact path="/activate/:uid/:token" render={ (props) => <Activate { ...props } /> } />
-      <Route exact path="/reset-password" render={ (props) => <ResetPassword { ...props } /> } />
-      <Route exact path="/password/reset/confirm/:uid/:token" render={ (props) => <ResetPasswordConfirm { ...props } /> } />
+      <Route exact path='/' component={ Movies } />
+      <Route exact path='/auth' render={ (props) => <Auth { ...props } /> } />
+      <Route exact path='/logout' component={ Logout } />
+      <Route exact path='/activate/:uid/:token' render={ (props) => <Activate { ...props } /> } />
+      <Route exact path='/reset-password' render={ (props) => <ResetPassword { ...props } /> } />
+      <Route exact path='/password/reset/confirm/:uid/:token' render={ (props) => <ResetPasswordConfirm { ...props } /> } />
     </Switch>
   );
 
   if (props.isAuthenticated) {
     routes = (
       <Switch>
-        <Route exact path="/" component={ Movies } />
-        <Route exact path="/auth" render={ (props) => <Auth { ...props } /> } />
-        <Route exact path="/logout" component={ Logout } />
-        <Route exact path="/activate/:uid/:token" render={ (props) => <Activate { ...props } /> } />
-        <Route exact path="/reset-password" render={ (props) => <ResetPassword { ...props } /> } />
-        <Route exact path="/password/reset/confirm/:uid/:token" render={ (props) => <ResetPasswordConfirm { ...props } /> } />
+        <Route exact path='/' component={ Movies } />
+        <Route exact path='/auth' render={ (props) => <Auth { ...props } /> } />
+        <Route exact path='/logout' component={ Logout } />
+        <Route exact path='/activate/:uid/:token' render={ (props) => <Activate { ...props } /> } />
+        <Route exact path='/reset-password' render={ (props) => <ResetPassword { ...props } /> } />
+        <Route exact path='/password/reset/confirm/:uid/:token' render={ (props) => <ResetPasswordConfirm { ...props } /> } />
       </Switch>
     );
   }

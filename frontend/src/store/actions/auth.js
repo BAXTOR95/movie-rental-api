@@ -54,6 +54,12 @@ export const auth = (email, password) => {
     }
 };
 
+export const authLoadUser = () => {
+    return {
+        type: actionTypes.AUTH_LOAD_USER
+    }
+};
+
 export const setAuthRedirectPath = (path) => {
     return {
         type: actionTypes.SET_AUTH_REDIRECT_PATH,

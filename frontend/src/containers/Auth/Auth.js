@@ -152,8 +152,8 @@ const Auth = props => {
             return (
                 <TextField
                     key={ formElement.id }
-                    variant="outlined"
-                    margin="normal"
+                    variant='outlined'
+                    margin='normal'
                     required
                     fullWidth
                     name={ formElement.id }
@@ -168,8 +168,8 @@ const Auth = props => {
             return (
                 <TextField
                     key={ formElement.id }
-                    variant="outlined"
-                    margin="normal"
+                    variant='outlined'
+                    margin='normal'
                     required
                     fullWidth
                     name={ formElement.id }
@@ -198,41 +198,41 @@ const Auth = props => {
     return (
         <React.Fragment>
             <Notifier />
-            <Grid container component="main" className={ classes.rootLogin }>
+            <Grid container component='main' className={ classes.rootLogin }>
                 <Grid item xs={ false } sm={ 4 } md={ 7 } className={ classes.image } />
                 <Grid item xs={ 12 } sm={ 8 } md={ 5 } component={ Paper } elevation={ 6 } square>
                     <div className={ classes.paper }>
                         <Avatar className={ classes.avatar }>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography component='h1' variant='h5'>
                             { isSignup ? 'Sign Up' : 'Sign In' }
                         </Typography>
                         { authRedirect }
                         <form className={ classes.form } onSubmit={ submitHandler }>
                             { form }
                             <FormControlLabel
-                                control={ <Checkbox value="remember" color="primary" /> }
-                                label="Remember me"
+                                control={ <Checkbox value='remember' color='primary' /> }
+                                label='Remember me'
                             />
                             <Button
-                                type="submit"
+                                type='submit'
                                 fullWidth
-                                variant="contained"
-                                color="primary"
+                                variant='contained'
+                                color='primary'
                                 className={ classes.submit }
                             >
                                 { isSignup ? 'Sign Up' : 'Sign In' }
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link href='#' variant='body2'>
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="#" variant="body2" onClick={ switchAuthModeHandler }>
-                                        { isSignup ? "Already have an account? Sign In" : "Don't have an account? Sign Up" }
+                                    <Link href='#' variant='body2' onClick={ switchAuthModeHandler }>
+                                        { isSignup ? 'Already have an account? Sign In' : 'Don\'t have an account? Sign Up' }
                                     </Link>
                                 </Grid>
                             </Grid>

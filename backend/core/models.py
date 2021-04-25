@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
             name=name,
-            ** extra_fields)
+            **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -71,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('name',)
+    REQUIRED_FIELDS = ('name', 'is_staff')
 
     def get_full_name(self):
         return self.name
