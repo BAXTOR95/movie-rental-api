@@ -6,6 +6,7 @@ const initialState = {
     refresh: localStorage.getItem('refresh'),
     isAuthenticated: null,
     user: null,
+    rememberMe: false,
     error: null,
     loading: null,
     authRedirectPath: '/'
@@ -21,7 +22,8 @@ const authSuccess = (state, action) => {
         refresh: action.refresh,
         isAuthenticated: true,
         error: null,
-        loading: false
+        loading: false,
+        rememberMe: action.rememberMe
     });
 };
 
@@ -51,7 +53,16 @@ const authUserLoadedFail = (state, action) => {
 const authLogout = (state, action) => {
     return updateObject(state, {
         access: null,
-        refresh: null
+        refresh: null,
+        isAuthenticated: false,
+        user: null,
+        rememberMe: false
+    });
+};
+
+const authRememberMe = (state, action) => {
+    return updateObject(state, {
+        rememberMe: action.rememberMe
     });
 };
 
@@ -70,6 +81,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
         case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state, action);
+        case actionTypes.AUTH_REMEMBER_ME: return authRememberMe(state, action);
         default:
             return state;
     };

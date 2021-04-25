@@ -9,7 +9,8 @@ export {
     authFail,
     authUserLoadedSuccess,
     authUserLoadedFail,
-    authLoadUser
+    authLoadUser,
+    authRememberMe
 } from './auth';
 
 export {

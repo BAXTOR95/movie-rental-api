@@ -6,11 +6,12 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (access, refresh) => {
+export const authSuccess = (access, refresh, rememberMe) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         access: access,
-        refresh: refresh
+        refresh: refresh,
+        rememberMe: rememberMe
     };
 };
 
@@ -46,11 +47,12 @@ export const logoutSucceed = () => {
     }
 }
 
-export const auth = (email, password) => {
+export const auth = (email, password, rememberMe) => {
     return {
         type: actionTypes.AUTH_USER,
         email: email,
         password: password,
+        rememberMe: rememberMe
     }
 };
 
@@ -72,3 +74,10 @@ export const authCheckState = () => {
         type: actionTypes.AUTH_CHECK_STATE
     }
 };
+
+export const authRememberMe = (rememberMe) => {
+    return {
+        type: actionTypes.AUTH_REMEMBER_ME,
+        rememberMe: rememberMe
+    }
+}
