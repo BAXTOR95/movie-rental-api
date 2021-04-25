@@ -141,11 +141,14 @@ class Rental(models.Model):
     )
     date_out = models.DateTimeField(default=timezone.now, blank=True)
     date_returned = models.DateTimeField(
-        auto_now=False, auto_now_add=True, null=True)
+        auto_now=False, null=True)
     daily_rental_fee = models.DecimalField(
         max_digits=5, decimal_places=2, default=0)
     rental_debt = models.DecimalField(
         max_digits=5, decimal_places=2, default=0)
+
+    class Meta:
+        unique_together = ('user', 'movie',)
 
     def save(self, *args, **kwargs):
         # if rental fee == 0 set it to rental price

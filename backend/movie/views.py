@@ -6,6 +6,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import (
     IsAdminUser, BasePermission, IsAuthenticated, SAFE_METHODS)
 from rest_framework.pagination import PageNumberPagination
+from rest_framework import filters
 
 from core.models import Genre, Movie, Rental
 
@@ -86,6 +87,8 @@ class MovieViewSet(viewsets.ModelViewSet):
     """Manage movies in the database
     """
     serializer_class = serializers.MovieSerializer
+    search_fields = ['title', ]
+    filter_backends = (filters.SearchFilter,)
     queryset = Movie.objects.all()
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAdminOrReadOnly,)
