@@ -41,6 +41,10 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+admin.site.site_title = 'Movie Rental admin'
+admin.site.site_header = 'Movie Rental administration'
+admin.site.index_title = 'Movie Rental administration'
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Genre)
 admin.site.register(models.Movie)
+admin.site.register(models.Rental)

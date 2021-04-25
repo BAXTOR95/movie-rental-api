@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from django.utils import timezone
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -14,6 +15,22 @@ def sample_user(email='test@gmail.com', password='testpass'):
         password (str, optional): user password. Defaults to 'testpass'.
     """
     return get_user_model().objects.create_user(email, password)
+
+
+def sample_movie(user, **params):
+    """Create and return a sample movie
+    """
+    defaults = {
+        'title': 'Sample movie',
+        'description': 'Sample description',
+        'stock': 100,
+        'rental_price': 2.50,
+        'sale_price': 10.00,
+        'availability': True
+    }
+    defaults.update(params)
+
+    return models.Movie.objects.create(user=user, **defaults)
 
 
 class ModelTests(TestCase):
@@ -97,3 +114,19 @@ class ModelTests(TestCase):
 
         exp_path = f'uploads/movie/{uuid}.jpg'
         self.assertEqual(file_path, exp_path)
+
+    def test_rental_str(self):
+        """Test the rental string representation
+        """
+        user = sample_user()
+        movie = sample_movie(user=user)
+        date_now = timezone.now()
+        rental = models.Rental.objects.create(
+            user=user,
+            movie=movie,
+            date_out=date_now,
+            daily_rental_fee=2.50
+        )
+
+        self.assertEqual(
+            str(rental), f'{user.email}-{movie.title}-{rental.date_out}')

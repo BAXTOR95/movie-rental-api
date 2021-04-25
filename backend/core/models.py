@@ -1,10 +1,14 @@
 import uuid
 import os
+import logging
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 def movie_image_file_path(instance, filename):
@@ -41,7 +45,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, name, password):
+    def create_superuser(self, email, name, password, **extra_fields):
         """Creates and saves a new superuser
 
         Args:
@@ -113,5 +117,57 @@ class Movie(models.Model):
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
     availability = models.BooleanField(default=True)
 
+    def save(self, *args, **kwargs):
+        if self.stock == 0:
+            self.availability = False
+        else:
+            self.availability = True
+        super(Movie, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.title
+
+
+class Rental(models.Model):
+    """Rental movie object
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    movie = models.ForeignKey(
+        'Movie',
+        on_delete=models.CASCADE
+    )
+    date_out = models.DateTimeField(default=timezone.now, blank=True)
+    date_returned = models.DateTimeField(
+        auto_now=False, auto_now_add=True, null=True)
+    daily_rental_fee = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0)
+    rental_debt = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0)
+
+    def save(self, *args, **kwargs):
+        # if rental fee == 0 set it to rental price
+        if self.daily_rental_fee == 0:
+            self.daily_rental_fee = self.movie.rental_price
+        # if rental debt == 0 set it to rental price
+        if self.rental_debt == 0:
+            self.rental_debt = self.movie.rental_price
+        # if movie returned, calculate the debt
+        if self.date_returned:
+            local_dr = timezone.localtime(
+                self.date_returned, timezone.get_fixed_timezone(60))
+            local_do = timezone.localtime(
+                self.date_out, timezone.get_fixed_timezone(60))
+            days_in_debt = local_do-local_dr
+            debt_to_pay = days_in_debt.days * \
+                self.daily_rental_fee
+            self.rental_debt = debt_to_pay
+            logger.debug(
+                f'Movie id={self.id} returned at {local_dr} \
+                    with a debt of {debt_to_pay}')
+        super(Rental, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.user.email}-{self.movie.title}-{self.date_out}'

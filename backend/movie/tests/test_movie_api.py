@@ -100,21 +100,25 @@ class PrivateMovieApiTests(TestCase):
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.data.get('results'), serializer.data)
 
     def test_retrieve_movies_nonadmin(self):
         """Test retrieving a list of movies as non admin user
         """
         movie1 = sample_movie(user=self.user)
-        movie2 = sample_movie(user=self.user, availability=False)
+        movie2 = sample_movie(
+            user=self.user,
+            stock=0,
+            availability=False
+        )
 
         res = self.client_nonadmin.get(MOVIES_URL)
 
         serializer1 = MovieSerializer(movie1)
         serializer2 = MovieSerializer(movie2)
 
-        self.assertIn(serializer1.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        self.assertIn(serializer1.data, res.data.get('results'))
+        self.assertNotIn(serializer2.data, res.data.get('results'))
 
     def test_movies_not_limited_to_user(self):
         """Retrieving movies for all users
@@ -132,8 +136,8 @@ class PrivateMovieApiTests(TestCase):
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data), 2)
-        self.assertEqual(res.data, serializer.data)
+        self.assertEqual(len(res.data.get('results')), 2)
+        self.assertEqual(res.data.get('results'), serializer.data)
 
     def test_view_movie_detail(self):
         """Test viewing a movie detail
@@ -213,6 +217,7 @@ class PrivateMovieApiTests(TestCase):
         payload = {
             'title': 'Avengers: Infinity War',
             'genre': [new_genre.id],
+            'stock': 0,
             'availability': False,
             'link': 'http://www.something.com/'
         }
@@ -235,7 +240,7 @@ class PrivateMovieApiTests(TestCase):
         payload = {
             'title': 'Interstellar',
             'description': 'A movie that will blow your mind',
-            'stock': 200,
+            'stock': 0,
             'rental_price': 3.50,
             'sale_price': 12.00,
             'availability': False
@@ -272,9 +277,9 @@ class PrivateMovieApiTests(TestCase):
         serializer1 = MovieSerializer(movie1)
         serializer2 = MovieSerializer(movie2)
         serializer3 = MovieSerializer(movie3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data.get('results'))
+        self.assertIn(serializer2.data, res.data.get('results'))
+        self.assertNotIn(serializer3.data, res.data.get('results'))
 
     def test_filter_movies_by_availability(self):
         """Test returning movies with specific Availability
@@ -282,7 +287,11 @@ class PrivateMovieApiTests(TestCase):
         movie1 = sample_movie(user=self.user, title='Interstellar')
         movie2 = sample_movie(user=self.user, title='The Great Gatsby')
         movie3 = sample_movie(
-            user=self.user, title='Avengers: Infinity War', availability=False)
+            user=self.user,
+            title='Avengers: Infinity War',
+            stock=0,
+            availability=False
+        )
 
         res = self.client.get(
             MOVIES_URL,
@@ -292,9 +301,9 @@ class PrivateMovieApiTests(TestCase):
         serializer1 = MovieSerializer(movie1)
         serializer2 = MovieSerializer(movie2)
         serializer3 = MovieSerializer(movie3)
-        self.assertIn(serializer1.data, res.data)
-        self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer3.data, res.data)
+        self.assertIn(serializer1.data, res.data.get('results'))
+        self.assertIn(serializer2.data, res.data.get('results'))
+        self.assertNotIn(serializer3.data, res.data.get('results'))
 
 
 class MovieImageUploadTests(TestCase):

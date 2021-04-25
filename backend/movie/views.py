@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import (
-    IsAdminUser, BasePermission, SAFE_METHODS)
+    IsAdminUser, BasePermission, IsAuthenticated, SAFE_METHODS)
+from rest_framework.pagination import PageNumberPagination
 
-from core.models import Genre, Movie
+from core.models import Genre, Movie, Rental
 
 from movie import serializers
 
@@ -63,6 +64,24 @@ class GenreViewSet(BaseMovieAttrViewSet):
     serializer_class = serializers.GenreSerializer
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    """Custom standard pagination class
+    """
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'results': data
+        })
+
+
 class MovieViewSet(viewsets.ModelViewSet):
     """Manage movies in the database
     """
@@ -70,6 +89,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = StandardResultsSetPagination
 
     def _params_to_ints(self, qs):
         """Convert a list of string IDs to a list of integers
@@ -84,19 +104,41 @@ class MovieViewSet(viewsets.ModelViewSet):
         """
         genre = self.request.query_params.get('genre')
         availability = self.request.query_params.get('availability')
+        order_by = self.request.query_params.get('order_by')
         queryset = self.queryset
         is_staff = self.request.user.is_staff
-        if is_staff and genre:
+
+        if genre and availability:
             genre_ids = self._params_to_ints(genre)
-            queryset = queryset.filter(genre__id__in=genre_ids)
-        if is_staff and availability:
-            queryset = queryset.filter(availability=availability.capitalize())
+            queryset = queryset.filter(
+                availability=availability.capitalize(),
+                genre__id__in=genre_ids
+            ).order_by('id')
+        elif genre:
+            genre_ids = self._params_to_ints(genre)
+            queryset = queryset.filter(
+                genre__id__in=genre_ids
+            ).order_by('id')
+        elif availability:
+            queryset = queryset.filter(
+                availability=availability.capitalize()
+            ).order_by('id')
 
         # only admin users can view all movies, available or not
         if is_staff:
-            return queryset.all()
+            if order_by:
+                return queryset.all().order_by(order_by)
+            else:
+                return queryset.all().order_by('id')
         else:
-            return queryset.filter(availability=True)
+            if order_by:
+                return queryset.filter(
+                    availability=True
+                ).order_by(order_by)
+            else:
+                return queryset.filter(
+                    availability=True
+                ).order_by('id')
 
     def get_serializer_class(self):
         """Return appropriate serializer class
@@ -152,3 +194,27 @@ class MovieViewSet(viewsets.ModelViewSet):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class RentalViewSet(viewsets.ModelViewSet):
+    """Manage rent movies in the database
+    """
+    serializer_class = serializers.RentalSerializer
+    queryset = Rental.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Retrieve the rented movies for the authenticated user
+        """
+        return self.queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        """Create a new rented movie
+        """
+        serializer.save(user=self.request.user)
+        user = self.request.user
+        movie = self.request.data.get('movie')
+        date_out = self.request.data.get('date_out')
+        logger.debug(
+            f'User id={user.id} rented movie id={movie} on {date_out}')

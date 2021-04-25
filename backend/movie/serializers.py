@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Genre, Movie
+from core.models import Genre, Movie, Rental
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -28,6 +28,7 @@ class MovieSerializer(serializers.ModelSerializer):
             'stock', 'rental_price', 'sale_price', 'availability'
         )
         read_only_fields = ('id', 'image')
+        ordering = ('id',)
 
 
 class MovieDetailSerializer(MovieSerializer):
@@ -43,4 +44,15 @@ class MovieImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ('id', 'image')
+        read_only_fields = ('id',)
+
+
+class RentalSerializer(serializers.ModelSerializer):
+    """Serialize a Rental object
+    """
+
+    class Meta:
+        model = Rental
+        fields = ('id', 'user', 'movie', 'date_out',
+                  'date_returned', 'daily_rental_fee', 'rental_debt')
         read_only_fields = ('id',)
