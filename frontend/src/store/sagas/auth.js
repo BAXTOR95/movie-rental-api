@@ -35,10 +35,10 @@ export function* authUserSaga(action) {
         yield call([ localStorage, 'removeItem' ], 'access');
         yield call([ localStorage, 'removeItem' ], 'refresh');
         yield call([ localStorage, 'removeItem' ], 'rememberMe');
-        yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.non_field_errors[ 0 ], 'error')));
-        yield put(actions.authFail(error.response.data.non_field_errors[ 0 ]));
+        yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
+        yield put(actions.authFail(error.response.data.detail));
     };
-}
+};
 
 export function* authLoadUserSaga(action) {
     const access = yield localStorage.getItem('access');
@@ -60,11 +60,11 @@ export function* authLoadUserSaga(action) {
         } catch (error) {
             yield put(actions.logout());
             yield put(actions.authUserLoadedFail());
-            yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.non_field_errors[ 0 ], 'error')));
-            yield put(actions.authFail(error.response.data.non_field_errors[ 0 ]));
+            yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
+            yield put(actions.authFail(error.response.data.detail));
         };
     }
-}
+};
 
 export function* authCheckStateSaga(action) {
     const access = yield localStorage.getItem('access');
@@ -99,11 +99,48 @@ export function* authCheckStateSaga(action) {
         } catch (error) {
             yield put(actions.logout());
             yield put(actions.authUserLoadedFail());
-            yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.non_field_errors[ 0 ], 'error')));
-            yield put(actions.authFail(error.response.data.non_field_errors[ 0 ]));
+            yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
+            yield put(actions.authFail(error.response.data.detail));
         }
     } else {
         yield put(actions.logout());
         yield put(actions.authUserLoadedFail());
+    }
+};
+
+export function* authPasswordResetSaga(action) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    const body = JSON.stringify({ email: action.email });
+
+    try {
+        yield axios.post('/auth/users/reset_password/', body, config);
+        yield put(actions.authPasswordResetSuccess());
+    } catch (error) {
+        yield put(actions.authPasswordResetFail());
+    };
+};
+
+export function* authPasswordResetConfirmSaga(action) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    const body = JSON.stringify({
+        uid: action.uid,
+        token: action.token,
+        new_password: action.new_password,
+        re_new_password: action.re_new_password
+    });
+
+    try {
+        yield axios.post('/auth/users/reset_password_confirm/', body, config);
+        yield put(actions.authPasswordResetConfirmSuccess());
+    } catch (error) {
+        yield put(actions.authPasswordResetConfirmFail());
     }
 }

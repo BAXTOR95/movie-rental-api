@@ -10,7 +10,13 @@ export {
     authUserLoadedSuccess,
     authUserLoadedFail,
     authLoadUser,
-    authRememberMe
+    authRememberMe,
+    authPasswordResetSuccess,
+    authPasswordResetConfirmFail,
+    authPasswordResetConfirmSuccess,
+    authPasswordResetFail,
+    authPasswordReset,
+    authPasswordResetConfirm
 } from './auth';
 
 export {

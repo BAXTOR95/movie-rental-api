@@ -44,8 +44,8 @@ export const logout = () => {
 export const logoutSucceed = () => {
     return {
         type: actionTypes.AUTH_LOGOUT
-    }
-}
+    };
+};
 
 export const auth = (email, password, rememberMe) => {
     return {
@@ -53,31 +53,72 @@ export const auth = (email, password, rememberMe) => {
         email: email,
         password: password,
         rememberMe: rememberMe
-    }
+    };
 };
 
 export const authLoadUser = () => {
     return {
         type: actionTypes.AUTH_LOAD_USER
-    }
+    };
 };
 
 export const setAuthRedirectPath = (path) => {
     return {
         type: actionTypes.SET_AUTH_REDIRECT_PATH,
         path: path
-    }
+    };
 };
 
 export const authCheckState = () => {
     return {
         type: actionTypes.AUTH_CHECK_STATE
-    }
+    };
 };
 
 export const authRememberMe = (rememberMe) => {
     return {
         type: actionTypes.AUTH_REMEMBER_ME,
         rememberMe: rememberMe
+    };
+};
+
+export const authPasswordResetSuccess = () => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET_SUCCESS
+    };
+};
+
+export const authPasswordResetFail = () => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET_FAIL
+    };
+};
+
+export const authPasswordResetConfirmSuccess = () => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET_CONFIRM_SUCCESS
+    };
+};
+
+export const authPasswordResetConfirmFail = () => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET_CONFIRM_FAIL
+    };
+};
+
+export const authPasswordReset = (email) => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET,
+        email: email
+    }
+}
+
+export const authPasswordResetConfirm = (uid, token, new_password, re_new_password) => {
+    return {
+        type: actionTypes.AUTH_PASSWORD_RESET_CONFIRM,
+        uid: uid,
+        token: token,
+        new_password: new_password,
+        re_new_password: re_new_password
     }
 }

@@ -14,7 +14,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link as LinkRouter } from 'react-router-dom';
 
 import * as actions from '../../store/actions/index';
 import { updateObject, checkValidity } from '../../shared/utility';
@@ -59,7 +59,15 @@ const useStyles = makeStyles((theme) => ({
 const Auth = props => {
     const classes = useStyles();
 
-    const { authRedirectPath, onSetAuthRedirectPath, onAuthRememberMe, rememberMe } = props;
+    const {
+        authRedirectPath,
+        onAuth,
+        onSetAuthRedirectPath,
+        onAuthRememberMe,
+        rememberMe,
+        loading,
+        isAuthenticated
+    } = props;
 
     const [ controls, setControls ] = useState({
         email: {
@@ -103,7 +111,7 @@ const Auth = props => {
         re_password: {
             elementConfig: {
                 type: 'password',
-                placeholder: 'Re-type Password'
+                placeholder: 'Confirm Password'
             },
             value: '',
             validation: {
@@ -140,7 +148,7 @@ const Auth = props => {
 
     const submitHandler = (event) => {
         event.preventDefault();
-        if (!isSignup) props.onAuth(controls.email.value, controls.password.value, rememberMe);
+        if (!isSignup) onAuth(controls.email.value, controls.password.value, rememberMe);
     };
 
     const switchAuthModeHandler = () => {
@@ -204,7 +212,7 @@ const Auth = props => {
         </React.Fragment>
     );
 
-    if (props.loading) {
+    if (loading) {
         form = (
             <div className='circularProgress'>
                 <CircularProgress />
@@ -214,7 +222,7 @@ const Auth = props => {
 
 
     let authRedirect = null;
-    if (props.isAuthenticated) {
+    if (isAuthenticated) {
         authRedirect = <Redirect to={ authRedirectPath } />
     }
 
@@ -245,9 +253,9 @@ const Auth = props => {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href='#' variant='body2'>
+                                    <LinkRouter to='/reset-password' variant='body2'>
                                         Forgot password?
-                                    </Link>
+                                    </LinkRouter>
                                 </Grid>
                                 <Grid item>
                                     <Link href='#' variant='body2' onClick={ switchAuthModeHandler }>
