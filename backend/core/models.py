@@ -149,7 +149,10 @@ class Rental(models.Model):
         max_digits=5, decimal_places=2, default=0)
 
     class Meta:
-        unique_together = ('user', 'movie',)
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'movie', 'date_returned'], name='unique movie returned')
+        ]
 
     def save(self, *args, **kwargs):
         # if rental fee == 0 set it to rental price
@@ -199,7 +202,10 @@ class Purchase(models.Model):
         max_digits=5, decimal_places=2, default=0)
 
     class Meta:
-        unique_together = ('user', 'movie',)
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'movie', 'date_bought'], name='unique movie bought')
+        ]
 
     def save(self, *args, **kwargs):
         # if purchase price == 0 set it to rental price

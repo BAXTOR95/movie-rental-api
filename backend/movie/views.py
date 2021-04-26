@@ -1,4 +1,5 @@
 import logging
+from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
@@ -247,9 +248,8 @@ class RentalViewSet(viewsets.ModelViewSet):
         movie = self.request.data.get('movie')
         serializer.save(user=self.request.user)
         user = self.request.user
-        date_out = self.request.data.get('date_out')
         logger.debug(
-            f'User id={user.id} rented movie id={movie} on {date_out}')
+            f'User id={user.id} rented movie id={movie} on {timezone.now()}')
 
     @action(methods=['POST'], detail=True, url_path='return-movie')
     def return_movie(self, request, pk=None):
