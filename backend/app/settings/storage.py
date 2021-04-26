@@ -31,9 +31,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static')
 ]
-STATIC_ROOT = '/vol/web/static'
+STATIC_ROOT = '/vol/web/static/'
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 # Media files
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/vol/web/media'
+MEDIA_ROOT = '/vol/web/media/'

@@ -2,7 +2,6 @@ FROM python:3.8-alpine
 LABEL MAINTAINER="Brian Arriaga brian.arriaga@gmail.com"
 
 ENV PYTHONUNBUFFERED 1
-ENV PATH="/scripts:${PATH}"
 
 COPY ./requirements.txt /requirements.txt
 RUN apk add --update --no-cache postgresql-client jpeg-dev libjpeg
@@ -26,5 +25,3 @@ RUN adduser -D user
 RUN chown -R user:user /vol
 RUN chmod -R 755 /vol/web
 USER user
-
-CMD ["entrypoint.sh"]
