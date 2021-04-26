@@ -26,9 +26,10 @@ class MovieSerializer(serializers.ModelSerializer):
         model = Movie
         fields = (
             'id', 'title', 'description', 'link', 'genre', 'image',
-            'stock', 'rental_price', 'sale_price', 'availability'
+            'stock', 'rental_price', 'sale_price', 'availability',
+            'likes'
         )
-        read_only_fields = ('id', 'image')
+        read_only_fields = ('id', 'image', 'likes')
         ordering = ('id',)
 
 
@@ -96,4 +97,4 @@ class LikedMovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = LikedMovie
         fields = ('id', 'user', 'movie', 'liked')
-        read_only_field = ('id', 'user', 'movie')
+        read_only_fields = ('id', 'user', 'liked')

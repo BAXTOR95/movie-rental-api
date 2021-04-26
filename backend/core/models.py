@@ -5,10 +5,10 @@ from django.db import models
 from django.db.models import F
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
+from django.db.utils import IntegrityError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-# from rest_framework.generics import get_object_or_404
 
 logger = logging.getLogger(__name__)
 
@@ -119,12 +119,11 @@ class Movie(models.Model):
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
     availability = models.BooleanField(default=True)
 
-    # @property
-    # def likes(self):
-    #     """Sets the number of likes of a given movie
-    #     """
-    #     movie = get_object_or_404(Movie, pk=self.kwargs['pk'])
-    #     return LikedMovie.objects.filter(movie_id=movie.id).count()
+    @property
+    def likes(self):
+        """Returns the movies like count
+        """
+        return LikedMovie.objects.filter(movie_id=self.pk).count()
 
     def save(self, *args, **kwargs):
         if self.stock == 0:
@@ -159,7 +158,9 @@ class Rental(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'movie', 'date_returned'], name='unique movie returned')
+                fields=['user', 'movie', 'date_returned'],
+                name='unique movie returned'
+            )
         ]
 
     def save(self, *args, **kwargs):
@@ -212,7 +213,9 @@ class Purchase(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'movie', 'date_bought'], name='unique movie bought')
+                fields=['user', 'movie', 'date_bought'],
+                name='unique movie bought'
+            )
         ]
 
     def save(self, *args, **kwargs):
@@ -243,6 +246,13 @@ class LikedMovie(models.Model):
         on_delete=models.CASCADE
     )
     liked = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        # if purchase price == 0 set it to rental price
+        try:
+            super(LikedMovie, self).save(*args, **kwargs)
+        except IntegrityError:
+            raise IntegrityError("You already liked this movie.")
 
     class Meta:
         constraints = [

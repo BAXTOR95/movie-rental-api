@@ -8,8 +8,6 @@ from rest_framework.permissions import (
     IsAdminUser, BasePermission, IsAuthenticated, SAFE_METHODS)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
-# from django.db.models import Count, Sum, Value, IntegerField
-# from django.db.models.functions import Coalesce
 
 from core.models import Genre, LikedMovie, Movie, Rental, Purchase
 
