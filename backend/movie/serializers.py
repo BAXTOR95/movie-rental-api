@@ -1,7 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
 
-from core.models import Genre, Movie, Rental
+from core.models import Genre, Movie, Rental, Purchase
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -57,7 +57,9 @@ class RentalSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'movie', 'date_out',
                   'date_returned', 'daily_rental_fee', 'rental_debt')
         read_only_fields = (
-            'id', 'date_out', 'daily_rental_fee', 'rental_debt', 'date_returned')
+            'id', 'user', 'date_out', 'daily_rental_fee',
+            'rental_debt', 'date_returned'
+        )
 
 
 class ReturnRentedMovieSerializer(serializers.ModelSerializer):
@@ -74,3 +76,14 @@ class ReturnRentedMovieSerializer(serializers.ModelSerializer):
                          self).to_internal_value(data)
         instance["date_returned"] = timezone.now()
         return instance
+
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    """Serialize a Purchase object
+    """
+
+    class Meta:
+        model = Purchase
+        fields = ('id', 'user', 'movie', 'date_bought', 'purchase_price')
+        read_only_fields = (
+            'id', 'user', 'date_bought', 'purchase_price')

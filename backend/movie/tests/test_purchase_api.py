@@ -6,11 +6,11 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Movie, Rental
-from movie.serializers import RentalSerializer
+from core.models import Movie, Purchase
+from movie.serializers import PurchaseSerializer
 
 
-RENTAL_URL = reverse('movie:rental-list')
+PURCHASE_URL = reverse('movie:purchase-list')
 
 
 def sample_movie(user, **params):
@@ -29,15 +29,10 @@ def sample_movie(user, **params):
     return Movie.objects.create(user=user, **defaults)
 
 
-def sample_rental(user, movie, **params):
+def sample_purchase(user, movie):
     """Create and return a sample rental
     """
-    defaults = {
-        'date_out': timezone.now()
-    }
-    defaults.update(params)
-
-    return Rental.objects.create(user=user, movie=movie, **defaults)
+    return Purchase.objects.create(user=user, movie=movie)
 
 
 class PublicRentalApiTests(TestCase):
@@ -50,7 +45,7 @@ class PublicRentalApiTests(TestCase):
     def test_auth_required(self):
         """Test that authentication is required to view the rentals
         """
-        res = self.client.get(RENTAL_URL)
+        res = self.client.get(PURCHASE_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -81,31 +76,30 @@ class PrivateRentalApiTests(TestCase):
         # sample movie
         self.movie = sample_movie(user=self.user)
 
-    def test_retrieve_rentals(self):
-        """Test retrieving a list of rented movies
+    def test_retrieve_purchases(self):
+        """Test retrieving a list of purchased movies
         """
         movie1 = sample_movie(user=self.user, title='Interstellar')
         movie2 = sample_movie(user=self.user, title='Nobody')
 
-        sample_rental(user=self.user_nonadmin, movie=movie1)
-        sample_rental(user=self.user_nonadmin, movie=movie2)
+        sample_purchase(user=self.user_nonadmin, movie=movie1)
+        sample_purchase(user=self.user_nonadmin, movie=movie2)
 
-        res = self.client_nonadmin.get(RENTAL_URL)
+        res = self.client_nonadmin.get(PURCHASE_URL)
 
-        rentals = Rental.objects.all()
-        serializer = RentalSerializer(rentals, many=True)
+        purchases = Purchase.objects.all()
+        serializer = PurchaseSerializer(purchases, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_create_basic_rental(self):
-        """Test creating a rented movie
+    def test_create_basic_purchase(self):
+        """Test creating a purchased movie
         """
         payload = {
             'user': self.user.id,
-            'movie': self.movie.id,
-            'date_out': timezone.now()
+            'movie': self.movie.id
         }
-        res = self.client_nonadmin.post(RENTAL_URL, payload)
+        res = self.client_nonadmin.post(PURCHASE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        rental = Rental.objects.get(id=res.data['id'])
-        self.assertEqual(payload['date_out'].date(), rental.date_out.date())
+        rental = Purchase.objects.get(id=res.data['id'])
+        self.assertEqual(timezone.now().date(), rental.date_bought.date())

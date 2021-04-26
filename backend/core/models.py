@@ -2,6 +2,7 @@ import uuid
 import os
 import logging
 from django.db import models
+from django.db.models import F
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 from django.utils import timezone
@@ -164,9 +165,15 @@ class Rental(models.Model):
             debt_to_pay = days_in_debt.days * \
                 self.daily_rental_fee
             self.rental_debt = debt_to_pay
+            # Increment stock count from movie
+            Movie.objects.filter(pk=self.movie_id).update(
+                stock=F('stock')+1)
             logger.debug(
-                f'Movie id={self.id} returned at {local_dr} \
-                    with a debt of {debt_to_pay}')
+                f'Movie id={self.movie.id} returned on {local_dr} ' +
+                f'by user id={self.user.id} with a debt of {debt_to_pay}')
+        elif not self.pk:
+            # Decrement stock count from movie
+            Movie.objects.filter(pk=self.movie_id).update(stock=F('stock')-1)
         # if rental debt == 0 set it to rental price
         if float(self.rental_debt) == 0:
             self.rental_debt = self.movie.rental_price
@@ -174,3 +181,37 @@ class Rental(models.Model):
 
     def __str__(self):
         return f'{self.user.email}-{self.movie.title}-{self.date_out}'
+
+
+class Purchase(models.Model):
+    """Purchase movie object
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    movie = models.ForeignKey(
+        'Movie',
+        on_delete=models.CASCADE
+    )
+    date_bought = models.DateTimeField(default=timezone.now, blank=True)
+    purchase_price = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0)
+
+    class Meta:
+        unique_together = ('user', 'movie',)
+
+    def save(self, *args, **kwargs):
+        # if purchase price == 0 set it to rental price
+        if float(self.purchase_price) == 0:
+            self.purchase_price = self.movie.sale_price
+        if not self.pk:
+            # Decrement stock count from movie
+            Movie.objects.filter(pk=self.movie_id).update(stock=F('stock')-1)
+        logger.debug(
+            f'User id={self.user.id} bought the Movie id={self.movie.id} ' +
+            f'on {self.date_bought} for a price={self.purchase_price}')
+        super(Purchase, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.user.email}-{self.movie.title}-{self.date_bought}'

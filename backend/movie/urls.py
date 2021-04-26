@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register('genres', views.GenreViewSet)
 router.register('movies', views.MovieViewSet)
 router.register('rentals', views.RentalViewSet)
+router.register('purchases', views.PurchaseViewSet)
 
 app_name = 'movie'
 

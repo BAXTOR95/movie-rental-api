@@ -8,7 +8,7 @@ from rest_framework.permissions import (
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
 
-from core.models import Genre, Movie, Rental
+from core.models import Genre, Movie, Rental, Purchase
 
 from movie import serializers
 
@@ -221,6 +221,8 @@ class RentalViewSet(viewsets.ModelViewSet):
         return self.serializer_class
 
     def create(self, request, *args, **kwargs):
+        """Validates the request data before renting the movie
+        """
         movie_id = self.request.data.get('movie')
         movie = Movie.objects.get(id=movie_id)
         if movie.availability:
@@ -228,7 +230,11 @@ class RentalViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+                headers=headers
+            )
         else:
             return Response(
                 'The movie you are trying to rent is not available',
@@ -265,3 +271,43 @@ class RentalViewSet(viewsets.ModelViewSet):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class PurchaseViewSet(viewsets.ModelViewSet):
+    """Manage Purchase movies in the database
+    """
+    serializer_class = serializers.PurchaseSerializer
+    queryset = Purchase.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Retrieve the bought movies for the authenticated user
+        """
+        return self.queryset.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        """Validates the request data before purchasing the movie
+        """
+        movie_id = self.request.data.get('movie')
+        movie = Movie.objects.get(id=movie_id)
+        if movie.availability:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+                headers=headers
+            )
+        else:
+            return Response(
+                'The movie you are trying to buy is not available',
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+    def perform_create(self, serializer):
+        """Create a new Purchase movie
+        """
+        serializer.save(user=self.request.user)

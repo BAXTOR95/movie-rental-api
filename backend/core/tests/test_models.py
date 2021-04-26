@@ -129,4 +129,21 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(
-            str(rental), f'{user.email}-{movie.title}-{rental.date_out}')
+            str(rental),
+            f'{user.email}-{movie.title}-{rental.date_out}'
+        )
+
+    def test_purchase_str(self):
+        """Test the purchase string representation
+        """
+        user = sample_user()
+        movie = sample_movie(user=user)
+        purchase = models.Purchase.objects.create(
+            user=user,
+            movie=movie
+        )
+
+        self.assertEqual(
+            str(purchase),
+            f'{user.email}-{movie.title}-{purchase.date_bought}'
+        )
