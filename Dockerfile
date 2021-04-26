@@ -15,7 +15,6 @@ RUN apk del .tmp-build-deps
 RUN mkdir /app
 WORKDIR /app
 COPY ./backend /app
-COPY ./scripts /scripts
 
 RUN chmod +x /scripts/*
 
