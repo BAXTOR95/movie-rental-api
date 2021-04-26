@@ -8,6 +8,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+# from rest_framework.generics import get_object_or_404
 
 logger = logging.getLogger(__name__)
 
@@ -118,6 +119,13 @@ class Movie(models.Model):
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
     availability = models.BooleanField(default=True)
 
+    # @property
+    # def likes(self):
+    #     """Sets the number of likes of a given movie
+    #     """
+    #     movie = get_object_or_404(Movie, pk=self.kwargs['pk'])
+    #     return LikedMovie.objects.filter(movie_id=movie.id).count()
+
     def save(self, *args, **kwargs):
         if self.stock == 0:
             self.availability = False
@@ -221,3 +229,26 @@ class Purchase(models.Model):
 
     def __str__(self):
         return f'{self.user.email}-{self.movie.title}-{self.date_bought}'
+
+
+class LikedMovie(models.Model):
+    """Liked movie object
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    movie = models.ForeignKey(
+        'Movie',
+        on_delete=models.CASCADE
+    )
+    liked = models.BooleanField(default=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'movie'], name='unique movie liked')
+        ]
+
+    def __str__(self):
+        return f'{self.user.email}-{self.movie.title}'

@@ -1,7 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
 
-from core.models import Genre, Movie, Rental, Purchase
+from core.models import Genre, LikedMovie, Movie, Rental, Purchase
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -87,3 +87,13 @@ class PurchaseSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'movie', 'date_bought', 'purchase_price')
         read_only_fields = (
             'id', 'user', 'date_bought', 'purchase_price')
+
+
+class LikedMovieSerializer(serializers.ModelSerializer):
+    """Serialize a like to a movie
+    """
+
+    class Meta:
+        model = LikedMovie
+        fields = ('id', 'user', 'movie', 'liked')
+        read_only_field = ('id', 'user', 'movie')

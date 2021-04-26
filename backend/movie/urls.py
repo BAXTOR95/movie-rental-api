@@ -9,6 +9,7 @@ router.register('genres', views.GenreViewSet)
 router.register('movies', views.MovieViewSet)
 router.register('rentals', views.RentalViewSet)
 router.register('purchases', views.PurchaseViewSet)
+router.register('likes', views.LikedMovieViewSet)
 
 app_name = 'movie'
 

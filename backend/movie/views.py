@@ -8,8 +8,10 @@ from rest_framework.permissions import (
     IsAdminUser, BasePermission, IsAuthenticated, SAFE_METHODS)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import filters
+# from django.db.models import Count, Sum, Value, IntegerField
+# from django.db.models.functions import Coalesce
 
-from core.models import Genre, Movie, Rental, Purchase
+from core.models import Genre, LikedMovie, Movie, Rental, Purchase
 
 from movie import serializers
 
@@ -306,6 +308,25 @@ class PurchaseViewSet(viewsets.ModelViewSet):
                 'The movie you are trying to buy is not available',
                 status=status.HTTP_403_FORBIDDEN,
             )
+
+    def perform_create(self, serializer):
+        """Create a new Purchase movie
+        """
+        serializer.save(user=self.request.user)
+
+
+class LikedMovieViewSet(viewsets.ModelViewSet):
+    """Manage liked movies in the database
+    """
+    serializer_class = serializers.LikedMovieSerializer
+    queryset = LikedMovie.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Retrieve the liked movies for the authenticated user
+        """
+        return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         """Create a new Purchase movie
