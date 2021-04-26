@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from core.models import Genre, Movie, Rental
@@ -55,4 +56,21 @@ class RentalSerializer(serializers.ModelSerializer):
         model = Rental
         fields = ('id', 'user', 'movie', 'date_out',
                   'date_returned', 'daily_rental_fee', 'rental_debt')
+        read_only_fields = (
+            'id', 'date_out', 'daily_rental_fee', 'rental_debt', 'date_returned')
+
+
+class ReturnRentedMovieSerializer(serializers.ModelSerializer):
+    """Serializer for returning a rented movie
+    """
+
+    class Meta:
+        model = Rental
+        fields = ('id',)
         read_only_fields = ('id',)
+
+    def to_internal_value(self, data):
+        instance = super(ReturnRentedMovieSerializer,
+                         self).to_internal_value(data)
+        instance["date_returned"] = timezone.now()
+        return instance

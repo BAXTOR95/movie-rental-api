@@ -212,12 +212,56 @@ class RentalViewSet(viewsets.ModelViewSet):
         """
         return self.queryset.filter(user=self.request.user)
 
+    def get_serializer_class(self):
+        """Return appropriate serializer class
+        """
+        if self.action == 'return_movie':
+            return serializers.ReturnRentedMovieSerializer
+
+        return self.serializer_class
+
+    def create(self, request, *args, **kwargs):
+        movie_id = self.request.data.get('movie')
+        movie = Movie.objects.get(id=movie_id)
+        if movie.availability:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return Response(
+                'The movie you are trying to rent is not available',
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
     def perform_create(self, serializer):
         """Create a new rented movie
         """
+        movie = self.request.data.get('movie')
         serializer.save(user=self.request.user)
         user = self.request.user
-        movie = self.request.data.get('movie')
         date_out = self.request.data.get('date_out')
         logger.debug(
             f'User id={user.id} rented movie id={movie} on {date_out}')
+
+    @action(methods=['POST'], detail=True, url_path='return-movie')
+    def return_movie(self, request, pk=None):
+        """Return a movie
+        """
+        rental = self.get_object()
+        serializer = self.get_serializer(
+            rental,
+            data=request.data
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

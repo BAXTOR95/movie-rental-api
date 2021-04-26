@@ -152,24 +152,24 @@ class Rental(models.Model):
 
     def save(self, *args, **kwargs):
         # if rental fee == 0 set it to rental price
-        if self.daily_rental_fee == 0:
+        if float(self.daily_rental_fee) == 0:
             self.daily_rental_fee = self.movie.rental_price
-        # if rental debt == 0 set it to rental price
-        if self.rental_debt == 0:
-            self.rental_debt = self.movie.rental_price
         # if movie returned, calculate the debt
         if self.date_returned:
             local_dr = timezone.localtime(
                 self.date_returned, timezone.get_fixed_timezone(60))
             local_do = timezone.localtime(
                 self.date_out, timezone.get_fixed_timezone(60))
-            days_in_debt = local_do-local_dr
+            days_in_debt = local_dr-local_do
             debt_to_pay = days_in_debt.days * \
                 self.daily_rental_fee
             self.rental_debt = debt_to_pay
             logger.debug(
                 f'Movie id={self.id} returned at {local_dr} \
                     with a debt of {debt_to_pay}')
+        # if rental debt == 0 set it to rental price
+        if float(self.rental_debt) == 0:
+            self.rental_debt = self.movie.rental_price
         super(Rental, self).save(*args, **kwargs)
 
     def __str__(self):
