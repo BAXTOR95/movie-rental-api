@@ -10,7 +10,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import authReducer from './store/reducers/auth';
 import snackbarReducer from './store/reducers/snackbar';
-import { watchAuth } from './store/sagas';
+import { watchAuth, watchMovies } from './store/sagas';
 
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
 
@@ -26,6 +26,7 @@ const store = createStore(rootReducer, composeEnhancers(
 ));
 
 sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchMovies);
 
 ReactDOM.render(
   <Provider store={ store }>

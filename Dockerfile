@@ -37,4 +37,4 @@ RUN chmod -R 755 /vol/web
 USER user
 
 # Run application
-CMD gunicorn config.wsgi:application
+CMD gunicorn config.wsgi:application --bind 0.0.0.0:8000

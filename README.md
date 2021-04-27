@@ -23,6 +23,7 @@ Movie Rental API made with Django and REST Framework
 - Go to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) to login with your admin credentials to be able to play around with the available objects
 - To create a user account, make sure to use a real email since the authentication is via JWT and requires activation sent via email to the user
 - Database will be persisted in `postgres_data` folder, in case you restart docker services
+- You can try to recreate the database with the database dump located at `backend` in a file named `pg_dump` by running the following command `pg_dump -U $DB_USER $DB_NAME -h $DB_HOST < pg_dump.sql`
 - When you are done playing around, run `docker-compose down`
 - Use POSTMAN or other tools to test API Endpoints. Import `Django Movie Rental API.postman_collection.json` collection file to POSTMAN to test the different API Endpoints
 

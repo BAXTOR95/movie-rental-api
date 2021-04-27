@@ -122,7 +122,7 @@ const Auth = props => {
         }
     });
 
-    const [ isSignup, setIsSignup ] = useState(true);
+    const [ isSignup, setIsSignup ] = useState(false);
     const [ accountCreated, setAccountCreated ] = useState(false);
 
     const inputChangedHandler = (event, controlName) => {
@@ -259,7 +259,7 @@ const Auth = props => {
     }
 
     if (accountCreated) {
-        return <Redirect to='/' />
+        setIsSignup(false);
     }
 
     return (

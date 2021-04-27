@@ -66,15 +66,42 @@ export const dislikeMovieStart = () => {
     };
 };
 
-export const dislikeMovieSuccess = () => {
+export const dislikeMovieSuccess = (movieId) => {
     return {
-        type: actionTypes.DISLIKE_MOVIE_SUCCESS
+        type: actionTypes.DISLIKE_MOVIE_SUCCESS,
+        movieId: movieId
     };
 };
 
 export const dislikeMovieFail = (error) => {
     return {
         type: actionTypes.DISLIKE_MOVIE_FAIL,
+        error: error
+    };
+};
+
+export const fetchLikedMovies = () => {
+    return {
+        type: actionTypes.FETCH_LIKED_MOVIES
+    };
+};
+
+export const fetchLikedMoviesStart = () => {
+    return {
+        type: actionTypes.FETCH_LIKED_MOVIES_START
+    };
+};
+
+export const fetchLikedMoviesSuccess = (likedMovies) => {
+    return {
+        type: actionTypes.FETCH_LIKED_MOVIES_SUCCESS,
+        likedMovies: likedMovies
+    };
+};
+
+export const fetchLikedMoviesFail = (error) => {
+    return {
+        type: actionTypes.FETCH_LIKED_MOVIES_FAIL,
         error: error
     };
 };
@@ -119,10 +146,10 @@ export const returnRentedMoviesStart = () => {
     };
 };
 
-export const returnRentedMoviesSuccess = (movieId) => {
+export const returnRentedMoviesSuccess = (returnedMovie) => {
     return {
         type: actionTypes.RETURN_RENTED_MOVIES_SUCCESS,
-        movieId: movieId
+        returnedMovie: returnedMovie
     };
 };
 

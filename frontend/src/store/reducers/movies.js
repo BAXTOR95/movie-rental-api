@@ -64,6 +64,22 @@ const dislikeMovieFail = (state, action) => {
     return updateObject(state, { error: action.error, loading: false });
 };
 
+const fetchLikedMoviesStart = (state, action) => {
+    return updateObject(state, { error: null, loading: true });
+};
+
+const fetchLikedMoviesSuccess = (state, action) => {
+    return updateObject(state, {
+        likedMovies: action.likedMovies,
+        error: null,
+        loading: false
+    });
+};
+
+const fetchLikedMoviesFail = (state, action) => {
+    return updateObject(state, { error: action.error, loading: false });
+};
+
 const rentMovieStart = (state, action) => {
     return updateObject(state, { error: null, loading: true });
 };
@@ -87,8 +103,8 @@ const returnRentedMoviesStart = (state, action) => {
 };
 
 const returnRentedMoviesSuccess = (state, action) => {
-    const updatedRentedMovies = [ ...state.rentedMovies ].filter(movieReturned => {
-        return movieReturned.id !== action.movieId
+    const updatedRentedMovies = [ ...state.rentedMovies ].map(movieReturned => {
+        return action.returnedMovie.find(movie => movie.id === movieReturned.id) || movieReturned;
     });
     const updatedState = {
         rentedMovies: updatedRentedMovies,
@@ -166,6 +182,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.RENT_MOVIE_START: return rentMovieStart(state, action);
         case actionTypes.RENT_MOVIE_SUCCESS: return rentMovieSuccess(state, action);
         case actionTypes.RENT_MOVIE_FAIL: return rentMovieFail(state, action);
+        case actionTypes.FETCH_LIKED_MOVIES_START: return fetchLikedMoviesStart(state, action);
+        case actionTypes.FETCH_LIKED_MOVIES_SUCCESS: return fetchLikedMoviesSuccess(state, action);
+        case actionTypes.FETCH_LIKED_MOVIES_FAIL: return fetchLikedMoviesFail(state, action);
         case actionTypes.RETURN_RENTED_MOVIES_START: return returnRentedMoviesStart(state, action);
         case actionTypes.RETURN_RENTED_MOVIES_SUCCESS: return returnRentedMoviesSuccess(state, action);
         case actionTypes.RETURN_RENTED_MOVIES_FAIL: return returnRentedMoviesFail(state, action);

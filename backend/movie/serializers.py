@@ -69,8 +69,10 @@ class ReturnRentedMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rental
-        fields = ('id',)
-        read_only_fields = ('id',)
+        fields = ('id', 'user', 'movie', 'date_out',
+                  'date_returned', 'daily_rental_fee', 'rental_debt')
+        read_only_fields = ('id', 'user', 'movie', 'date_out',
+                            'date_returned', 'daily_rental_fee', 'rental_debt')
 
     def to_internal_value(self, data):
         instance = super(ReturnRentedMovieSerializer,
