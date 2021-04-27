@@ -6,7 +6,8 @@ Movie Rental API made with Django and REST Framework
 
 ### Which Third Party Libraries Are Used?
 
-- Django Rest Framework for easy API Creation
+- Django Rest Framework for the backend
+- React Framework for the frontend
 
 ### How To Run It Locally
 
@@ -18,8 +19,8 @@ Movie Rental API made with Django and REST Framework
 - Run `docker-compose up`, under the cloned repo's directory
 - Create a superuser by typing `docker-compose run --rm app sc -c "python manage.py createsuperuser"`
 - Run tests by typing `docker-compose run --rm app sc -c "python manage.py test && flake8"`
-- Go to [http://localhost:3000](http://localhost:3000) from your favorite browser and play around with the APP
-- Go to [http://localhost:3000/admin/](http://localhost:3000/admin/) to login with your admin credentials to be able to play around with the available objects
+- Go to [http://127.0.0.1:8000](http://127.0.0.1:8000) from your favorite browser and play around with the APP
+- Go to [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) to login with your admin credentials to be able to play around with the available objects
 - To create a user account, make sure to use a real email since the authentication is via JWT and requires activation sent via email to the user
 - Database will be persisted in `postgres_data` folder, in case you restart docker services
 - When you are done playing around, run `docker-compose down`
