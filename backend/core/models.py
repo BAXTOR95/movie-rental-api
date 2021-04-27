@@ -197,7 +197,7 @@ class Rental(models.Model):
                 stock=F('stock')+1)
             logger.debug(
                 f'Movie id={self.movie.id} returned on {self.date_returned} ' +
-                f'by user id={self.user.id} with a debt of {self.debt_to_pay}')
+                f'by user id={self.user.id} with a debt of {self.rental_debt}')
         elif not self.pk:
             # Decrement stock count from movie
             Movie.objects.filter(pk=self.movie_id).update(stock=F('stock')-1)
