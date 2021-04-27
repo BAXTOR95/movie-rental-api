@@ -13,20 +13,13 @@ services:
               python manage.py makemigrations core &&
               python manage.py migrate &&
               python manage.py runserver 0.0.0.0:8000"
-    environment:
-      - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASS=supersecretpassword
-      - SECRET_KEY=django-insecure-&*)838bj5l=f*gx*wg5hk!)u)8qy+_(kru74si1ockw*rt-n2^
-      - DEBUG=1
+    env_file: .env
     depends_on:
       - db
     tty: true
 
   db:
     image: postgres:10-alpine
-    environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=supersecretpassword # should later be replaced by an encrypted variable
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    env_file: .env.db

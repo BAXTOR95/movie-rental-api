@@ -101,3 +101,4 @@ class PrivateLikedMovieApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         liked_movie = LikedMovie.objects.get(id=res.data['id'])
         self.assertEqual(self.movie.id, liked_movie.movie_id)
+        self.assertEqual(self.movie.likes, 1)

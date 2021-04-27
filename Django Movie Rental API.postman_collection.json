@@ -1,0 +1,1147 @@
+{
+	"info": {
+		"_postman_id": "6e185fa9-797a-4690-abfa-c7349d749f3a",
+		"name": "Django Movie Rental API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"name\": \"Test User\",\r\n    \"password\": \"MyAwesomePassword123\",\r\n    \"re_password\": \"MyAwesomePassword123\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/users/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Account Verification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": \"Mg\",\r\n    \"token\": \"almyho-11983e38873d26c794680d0cd76a9302\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/users/activation/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"users",
+						"activation",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get JSON Web Tokens",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"MyAwesomePassword123\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/jwt/create/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"jwt",
+						"create",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get New Access Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYyMDYwODI1OSwianRpIjoiMTk5ZGNjNjc5OTA0NGQ3MWJkZDFmNjcxYWZmNjllZDAiLCJ1c2VyX2lkIjoyfQ.hgYEu6LF1MDgjUJZOI-ZnflvFmfVvt8D6YFKAVkcznw\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/jwt/refresh/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"jwt",
+						"refresh",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request New Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/users/reset_password/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"users",
+						"reset_password",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": \"Mg\",\r\n    \"token\": \"almypu-ffc61f383e76ab2e3d242b2fb61aebb2\",\r\n    \"new_password\": \"ThisIncrediblePassword321\",\r\n    \"re_new_password\": \"ThisIncrediblePassword321\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/users/reset_password_confirm/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"users",
+						"reset_password_confirm",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzkxNTIyLCJqdGkiOiIxYmVjNmI3ZjZjMDk0MzUyOGEyOTU4OTc1YTU3ZmM2MyIsInVzZXJfaWQiOjN9.mrRNjq1_S83yhS3J4_QUXdUdruJcY5fR4BrqaKMPpbU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/users/me/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"users",
+						"me",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzU1NDg5LCJqdGkiOiJhNjc2NzlmNmYxMDc0YTM2YmNkYTkzMmE2ZjMyM2E3NiIsInVzZXJfaWQiOjJ9.WDabgkjXf89t1GQNre3khtoxjDNCh_ZLY-vROKYIYhc\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/auth/jwt/verify/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"auth",
+						"jwt",
+						"verify",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Genre [ADMIN]",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzgyNzg5LCJqdGkiOiJiZTcxNWRlYTI2MWQ0MzRmOTdkN2M1YmFjODBmMjBjZCIsInVzZXJfaWQiOjF9.xfzX0RIIspjAlOw4GuYQFjlgwLrVuo5ZlTRs1GRdx5E",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Classic\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/genres/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"genres",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Genres [ADMIN]",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5Mzg4MTE2LCJqdGkiOiJiNGQ1MWZlZjBiNDE0NmY2OWU5OWUwNTA5OWMzNTBiNyIsInVzZXJfaWQiOjF9.9_s-JGeAQQq9A3l29MTIqSczbQXhW9krsz8lAV0t_PQ",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/genres/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"genres",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Movie [ADMIN]",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzgyNzg5LCJqdGkiOiJiZTcxNWRlYTI2MWQ0MzRmOTdkN2M1YmFjODBmMjBjZCIsInVzZXJfaWQiOjF9.xfzX0RIIspjAlOw4GuYQFjlgwLrVuo5ZlTRs1GRdx5E",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"The Dark Knight\",\r\n    \"description\": \"When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.\",\r\n    \"genre\": [\r\n        1,\r\n        6,\r\n        8\r\n    ],\r\n    \"stock\": 100,\r\n    \"rental_price\": 2.50,\r\n    \"sale_price\": 10.00\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload image to Movie [ADMIN]",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzgyNzg5LCJqdGkiOiJiZTcxNWRlYTI2MWQ0MzRmOTdkN2M1YmFjODBmMjBjZCIsInVzZXJfaWQiOjF9.xfzX0RIIspjAlOw4GuYQFjlgwLrVuo5ZlTRs1GRdx5E",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/brian/Downloads/tdk.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/4/upload-image/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						"4",
+						"upload-image",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies [ADMIN]",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5Mzk3NzU4LCJqdGkiOiI4MTZjYmViYmU5MTM0MmQyYmMyZjA1YjkyNTk4MmQ1ZiIsInVzZXJfaWQiOjF9.niqPWaN80SWdfz6LnDNQFpzYP5EgrZT91-Mw4RGyRHI",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies [Search filters]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/?search=Av",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						""
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "Av"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies [filters]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/?genre=1&availability=true&order_by=-title",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						""
+					],
+					"query": [
+						{
+							"key": "genre",
+							"value": "1"
+						},
+						{
+							"key": "availability",
+							"value": "true"
+						},
+						{
+							"key": "order_by",
+							"value": "-title"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies [filters2]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/?genre=1&availability=true&order_by=likes",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						""
+					],
+					"query": [
+						{
+							"key": "genre",
+							"value": "1"
+						},
+						{
+							"key": "availability",
+							"value": "true"
+						},
+						{
+							"key": "order_by",
+							"value": "likes"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movies Rented",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzkxNTIyLCJqdGkiOiIxYmVjNmI3ZjZjMDk0MzUyOGEyOTU4OTc1YTU3ZmM2MyIsInVzZXJfaWQiOjN9.mrRNjq1_S83yhS3J4_QUXdUdruJcY5fR4BrqaKMPpbU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/rentals/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"rentals",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rent a Movie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA2Mzc1LCJqdGkiOiIyNDQyMWZlOWRjNDY0YzgyOGQ0ZmU2ZjVkZGNkYzllYiIsInVzZXJfaWQiOjN9.VLKnJkjBg6Arig4nLwfmLsW9ZtJNnK0vjoJ0nUl2NaI",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"movie\": 4\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/rentals/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"rentals",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Rented Movies",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA2Mzc1LCJqdGkiOiIyNDQyMWZlOWRjNDY0YzgyOGQ0ZmU2ZjVkZGNkYzllYiIsInVzZXJfaWQiOjN9.VLKnJkjBg6Arig4nLwfmLsW9ZtJNnK0vjoJ0nUl2NaI",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/rentals/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"rentals",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Rented Movies Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzkxNTIyLCJqdGkiOiIxYmVjNmI3ZjZjMDk0MzUyOGEyOTU4OTc1YTU3ZmM2MyIsInVzZXJfaWQiOjN9.mrRNjq1_S83yhS3J4_QUXdUdruJcY5fR4BrqaKMPpbU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/rentals/9/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"rentals",
+						"9",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Return a Movie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA2Mzc1LCJqdGkiOiIyNDQyMWZlOWRjNDY0YzgyOGQ0ZmU2ZjVkZGNkYzllYiIsInVzZXJfaWQiOjN9.VLKnJkjBg6Arig4nLwfmLsW9ZtJNnK0vjoJ0nUl2NaI",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/rentals/13/return-movie/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"rentals",
+						"13",
+						"return-movie",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase a Movie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA0MTEzLCJqdGkiOiI3NGIwOWEyOGZiYmI0M2E3YjNlOGUwMjljMGViZjhkOSIsInVzZXJfaWQiOjN9.IUBPV6isvy07FSEGMJirVT9Ocd22R17R7QSpR-5d3rQ",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"movie\": 1\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/purchases/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"purchases",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Purchased a Movies",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/purchases/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"purchases",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Purchased a Movies Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA0MTEzLCJqdGkiOiI3NGIwOWEyOGZiYmI0M2E3YjNlOGUwMjljMGViZjhkOSIsInVzZXJfaWQiOjN9.IUBPV6isvy07FSEGMJirVT9Ocd22R17R7QSpR-5d3rQ",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/purchases/5/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"purchases",
+						"5",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like a Movie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"movie\": 3\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/likes/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"likes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get liked movies",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"movie\": 1\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/likes/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"likes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dislike a Movie",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/likes/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"likes",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

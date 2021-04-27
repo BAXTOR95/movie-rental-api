@@ -133,7 +133,7 @@ class MovieViewSet(viewsets.ModelViewSet):
             if order_by:
                 return queryset.all().order_by(order_by)
             else:
-                return queryset.all().order_by('id')
+                return queryset.all().order_by('title')
         else:
             if order_by:
                 return queryset.filter(
@@ -142,7 +142,7 @@ class MovieViewSet(viewsets.ModelViewSet):
             else:
                 return queryset.filter(
                     availability=True
-                ).order_by('id')
+                ).order_by('title')
 
     def get_serializer_class(self):
         """Return appropriate serializer class

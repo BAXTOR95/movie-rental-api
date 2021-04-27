@@ -155,6 +155,29 @@ class Rental(models.Model):
     rental_debt = models.DecimalField(
         max_digits=5, decimal_places=2, default=0)
 
+    @property
+    def rental_debt(self):
+        """Returns the amount to pay for the rented movie
+        """
+        local_do = timezone.localtime(
+            self.date_out, timezone.get_fixed_timezone(60)
+        )
+        local_dr = timezone.localtime(
+            timezone.now(), timezone.get_fixed_timezone(60)
+        )
+        if self.date_returned:
+            local_dr = timezone.localtime(
+                self.date_returned, timezone.get_fixed_timezone(60)
+            )
+        days_in_debt = local_dr-local_do
+        debt_to_pay = days_in_debt.days * \
+            self.daily_rental_fee
+        # if rental debt == 0 set it to rental price
+        if debt_to_pay == 0:
+            debt_to_pay = self.movie.rental_price
+
+        return debt_to_pay
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -169,26 +192,15 @@ class Rental(models.Model):
             self.daily_rental_fee = self.movie.rental_price
         # if movie returned, calculate the debt
         if self.date_returned:
-            local_dr = timezone.localtime(
-                self.date_returned, timezone.get_fixed_timezone(60))
-            local_do = timezone.localtime(
-                self.date_out, timezone.get_fixed_timezone(60))
-            days_in_debt = local_dr-local_do
-            debt_to_pay = days_in_debt.days * \
-                self.daily_rental_fee
-            self.rental_debt = debt_to_pay
             # Increment stock count from movie
             Movie.objects.filter(pk=self.movie_id).update(
                 stock=F('stock')+1)
             logger.debug(
-                f'Movie id={self.movie.id} returned on {local_dr} ' +
-                f'by user id={self.user.id} with a debt of {debt_to_pay}')
+                f'Movie id={self.movie.id} returned on {self.date_returned} ' +
+                f'by user id={self.user.id} with a debt of {self.debt_to_pay}')
         elif not self.pk:
             # Decrement stock count from movie
             Movie.objects.filter(pk=self.movie_id).update(stock=F('stock')-1)
-        # if rental debt == 0 set it to rental price
-        if float(self.rental_debt) == 0:
-            self.rental_debt = self.movie.rental_price
         super(Rental, self).save(*args, **kwargs)
 
     def __str__(self):
