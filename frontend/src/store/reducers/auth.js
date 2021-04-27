@@ -4,7 +4,7 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     access: localStorage.getItem('access'),
     refresh: localStorage.getItem('refresh'),
-    isAuthenticated: null,
+    isAuthenticated: false,
     user: null,
     rememberMe: false,
     error: null,

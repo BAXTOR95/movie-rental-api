@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../shared/utility';
 
 const initialState = {
-    movies: {},
+    movies: null,
     rentedMovies: [],
     purchasedMovies: [],
     likedMovies: [],
@@ -10,11 +10,11 @@ const initialState = {
     loading: false
 };
 
-const fetchMovieStart = (state, action) => {
+const fetchMoviesStart = (state, action) => {
     return updateObject(state, { error: null, loading: true });
 };
 
-const fetchMovieSuccess = (state, action) => {
+const fetchMoviesSuccess = (state, action) => {
     return updateObject(state, {
         movies: action.movies,
         error: null,
@@ -22,7 +22,7 @@ const fetchMovieSuccess = (state, action) => {
     });
 };
 
-const fetchMovieFail = (state, action) => {
+const fetchMoviesFail = (state, action) => {
     return updateObject(state, { error: action.error, loading: false });
 };
 
@@ -170,9 +170,9 @@ const fetchBoughtMoviesFail = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.FETCH_MOVIES_START: return fetchMovieStart(state, action);
-        case actionTypes.FETCH_MOVIES_SUCCESS: return fetchMovieSuccess(state, action);
-        case actionTypes.FETCH_MOVIES_FAIL: return fetchMovieFail(state, action);
+        case actionTypes.FETCH_MOVIES_START: return fetchMoviesStart(state, action);
+        case actionTypes.FETCH_MOVIES_SUCCESS: return fetchMoviesSuccess(state, action);
+        case actionTypes.FETCH_MOVIES_FAIL: return fetchMoviesFail(state, action);
         case actionTypes.LIKE_MOVIE_START: return likeMovieStart(state, action);
         case actionTypes.LIKE_MOVIE_SUCCESS: return likedMovieSuccess(state, action);
         case actionTypes.LIKE_MOVIE_FAIL: return likedMovieFail(state, action);

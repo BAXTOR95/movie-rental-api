@@ -27,10 +27,10 @@ export {
 } from './auth';
 
 export {
-    fetchMovie,
-    fetchMovieStart,
-    fetchMovieSuccess,
-    fetchMovieFail,
+    fetchMovies,
+    fetchMoviesStart,
+    fetchMoviesSuccess,
+    fetchMoviesFail,
     likeMovie,
     likeMovieStart,
     likeMovieSuccess,

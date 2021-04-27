@@ -34,11 +34,20 @@ export const checkValidity = (value, rules) => {
     }
 
     return isValid;
-}
+};
 
 export const toFirstCharUppercase = name => {
     return name.charAt(0).toUpperCase() + name.slice(1);
-}
+};
+
+export const handleLikedMovie = (movieId, likedMovies, onLikeMovie, onDislikeMovie) => {
+    const liked = (likedMovies.find(likedMovie => likedMovie.movie === movieId));
+    if (liked) {
+        onDislikeMovie(liked.id);
+    } else {
+        onLikeMovie(movieId);
+    };
+};
 
 export const getSnackbarData = (message, variant) => {
     return {

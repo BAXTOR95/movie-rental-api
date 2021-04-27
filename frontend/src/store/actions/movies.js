@@ -1,25 +1,25 @@
 import * as actionTypes from './actionTypes';
 
-export const fetchMovie = () => {
+export const fetchMovies = () => {
     return {
         type: actionTypes.FETCH_MOVIES
     };
 };
 
-export const fetchMovieStart = () => {
+export const fetchMoviesStart = () => {
     return {
         type: actionTypes.FETCH_MOVIES_START
     };
 };
 
-export const fetchMovieSuccess = (movies) => {
+export const fetchMoviesSuccess = (movies) => {
     return {
         type: actionTypes.FETCH_MOVIES_SUCCESS,
         movies: movies
     };
 };
 
-export const fetchMovieFail = (error) => {
+export const fetchMoviesFail = (error) => {
     return {
         type: actionTypes.FETCH_MOVIES_FAIL,
         error: error

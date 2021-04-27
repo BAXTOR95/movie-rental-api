@@ -1,9 +1,112 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Route } from 'react-router-dom';
+import { Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import MuiAccordion from '@material-ui/core/Accordion';
+import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import MuiTypography from '@material-ui/core/Typography';
 
-const Movies = () => {
+import Notifier from '../../components/Notifier/Notifier';
+import MoviesList from '../../components/Movies/MoviesList/MoviesList';
+import MovieDetail from '../../components/Movies/MovieDetail/MovieDetail';
+
+const Accordion = withStyles({
+    root: {
+        backgroundColor: 'rgb(0, 0, 0, .01)',
+        border: '1px solid rgba(26, 53, 88, .125)',
+        boxShadow: 'none',
+        '&:not(:last-child)': {
+            borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+        '&$expanded': {
+            margin: 'auto',
+        },
+    },
+    expanded: {},
+})(MuiAccordion);
+
+const AccordionSummary = withStyles({
+    root: {
+        backgroundColor: 'rgba(0, 0, 0, .3)',
+        borderBottom: '1px solid rgba(26, 53, 88 .125)',
+        marginBottom: -1,
+        minHeight: 56,
+        '&$expanded': {
+            minHeight: 56,
+        },
+    },
+    content: {
+        '&$expanded': {
+            margin: '12px 0',
+        },
+    },
+    expanded: {},
+})(MuiAccordionSummary);
+
+const AccordionDetails = withStyles((theme) => ({
+    root: {
+        padding: theme.spacing(2),
+    },
+}))(MuiAccordionDetails);
+
+const Typography = withStyles((theme) => ({
+    root: {
+        color: theme.palette.common.black
+    }
+}))(MuiTypography);
+
+export const Movies = props => {
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const [ expanded, setExpanded ] = React.useState('panel1');
+
+    const handleChange = (panel) => (event, newExpanded) => {
+        setExpanded(newExpanded ? panel : false);
+    };
+
     return (
         <React.Fragment>
-            Movies
+            <Notifier />
+            <Grid container spacing={ 1 }>
+                <Grid item xs={ 12 } sm>
+                    <MoviesList />
+                </Grid>
+                <Grid item xs={ 12 } sm>
+                    <Accordion square expanded={ expanded === 'panel1' } onChange={ handleChange('panel1') }>
+                        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                            <Typography>Movie Detail</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {/* <Route
+                                path={ '/:movieId' }
+                                component={ MovieDetail } /> */}
+                            { !isAuthenticated && <Typography>Select a movie to see it's details</Typography> }
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion square expanded={ expanded === 'panel2' } onChange={ handleChange('panel2') }>
+                        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+                            <Typography>Rented Movies</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {/* Rented movies list */ }
+                            { !isAuthenticated && <Typography>Login to see the list of rented movies</Typography> }
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion square expanded={ expanded === 'panel3' } onChange={ handleChange('panel3') }>
+                        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+                            <Typography>Bought Movies</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {/* Bought movies list */ }
+                            { !isAuthenticated && <Typography>Login to see the list of bought movies</Typography> }
+                        </AccordionDetails>
+                    </Accordion>
+                </Grid>
+            </Grid>
         </React.Fragment>
     );
 };

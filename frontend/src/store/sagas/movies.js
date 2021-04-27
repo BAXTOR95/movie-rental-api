@@ -5,7 +5,7 @@ import { getSnackbarData } from '../../shared/utility';
 import * as actions from '../actions/index';
 
 export function* fetchMoviesSaga(action) {
-    yield put(actions.fetchMovieStart());
+    yield put(actions.fetchMoviesStart());
     const access = yield localStorage.getItem('access');
     const config = {
         headers: {
@@ -17,9 +17,9 @@ export function* fetchMoviesSaga(action) {
     const url = '/movie/movies/';
     try {
         let response = yield axios.get(url, config);
-        yield put(actions.fetchMovieSuccess(response.data));
+        yield put(actions.fetchMoviesSuccess(response.data));
     } catch (error) {
-        yield put(actions.fetchMovieFail(error));
+        yield put(actions.fetchMoviesFail(error));
         yield put(actions.enqueueSnackbar(getSnackbarData('Could not fetch movie list', 'error')));
     };
 };
@@ -55,10 +55,9 @@ export function* dislikeMovieSaga(action) {
             'Accept': 'application/json'
         }
     };
-    const body = JSON.stringify({ movie: action.movieId });
-    const url = `/movie/likes/${ action.movieId }`;
+    const url = `/movie/likes/${ action.movieId }/`;
     try {
-        yield axios.delete(url, body, config);
+        yield axios.delete(url, config);
         yield put(actions.dislikeMovieSuccess(action.movieId));
     } catch (error) {
         yield put(actions.dislikeMovieFail(error));

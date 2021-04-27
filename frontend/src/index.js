@@ -9,6 +9,7 @@ import { SnackbarProvider } from 'notistack';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import authReducer from './store/reducers/auth';
+import moviesReducer from './store/reducers/movies';
 import snackbarReducer from './store/reducers/snackbar';
 import { watchAuth, watchMovies } from './store/sagas';
 
@@ -16,6 +17,7 @@ const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDU
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  movies: moviesReducer,
   snackbar: snackbarReducer
 });
 
