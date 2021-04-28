@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import dj_database_url
 
-from .base import *
+from app.settings.base import *
 
 env = os.environ.copy()
 
@@ -15,7 +15,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ALLOWED_HOSTS = ['*']
 
-if "DATABASE_URL" in env:
+if 'DATABASE_URL' in env:
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600, ssl_require=True)
 
@@ -41,6 +41,8 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 # Static files
 
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}'
+
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'build', 'root')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

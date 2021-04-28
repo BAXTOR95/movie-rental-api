@@ -9,19 +9,24 @@ ENV DJANGO_SETTINGS_MODULE app.settings.production
 ENV WEB_CONCURRENCY 3
 ENV REACT_APP_DJANGO_SERVER https://django-rental-movie-app.herokuapp.com/api/
 
-EXPOSE 8000
-
 # install system-wide dependencies
-COPY ./requirements.txt /requirements.txt
+
+# Install curl, node, & yarn
+RUN apt-get install -y curl \
+    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get install -y nodejs \
+    && curl -o- -L https://yarnpkg.com/install.sh | bash
+
 RUN apk update
 RUN apk add postgresql-client jpeg-dev libjpeg
 RUN apk add --update nodejs nodejs-npm
 RUN apk add --virtual .tmp-build-deps \
       gcc libc-dev linux-headers postgresql-dev musl-dev \
       zlib zlib-dev python3-dev libffi-dev openssl-dev cargo
-RUN pip install --upgrade pip
 
-# install project dependencies
+# Install Python dependencies
+COPY ./requirements.txt /requirements.txt
+RUN pip install --upgrade pip
 RUN pip install -r /requirements.txt
 
 # Remove unnecessary dependencies
@@ -34,26 +39,30 @@ WORKDIR /app
 # copy front end to compile it
 COPY ./frontend /app
 # Install front-end dependencies.
-RUN npm install
+RUN $HOME/.yarn/bin/yarn install
 # Compile static files
-RUN npm run build:prod
+RUN $HOME/.yarn/bin/yarn build:prod
+
+# Have to move all static files other than index.html to root/
+# for whitenoise middleware
+WORKDIR /app/build
+
+RUN mkdir root && mv *.ico *.js *.json root
+
+WORKDIR /app
 
 # copy project
 COPY ./backend /app
+COPY ./backend/scripts/ /app/
 
 # make static and media root
 RUN mkdir -p /vol/web/media
 RUN mkdir -p /vol/web/static
-RUN adduser -D user
-RUN chown -R user:user /vol
-RUN chmod -R 755 /vol/web
 
 # Install assets
 RUN python manage.py collectstatic --noinput --clear
 
-RUN ls
+EXPOSE $PORT
 
-USER user
-
-# Run application
-CMD gunicorn app.wsgi:application --log-file -
+RUN ["chmod", "+x", "/app/entrypoint-prod.sh"]
+ENTRYPOINT ["/app/entrypoint-prod.sh"]

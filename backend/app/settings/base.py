@@ -16,7 +16,7 @@ from datetime import timedelta
 import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = environ.Path(__file__) - 3
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 
 # Application definition
 
@@ -241,3 +241,6 @@ EMAIL_USE_TLS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
 ]
+
+# Appends slash to url if not provided
+APPEND_SLASH = True

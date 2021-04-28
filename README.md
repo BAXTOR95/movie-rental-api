@@ -16,7 +16,7 @@ Movie Rental API made with Django and REST Framework
 - `cd` into the `frontend` folder and type `yarn install` or `npm install` to install frontend dependencies
 - Build the frontend project by running the command `yarn build` to create the static files to be use with Django
 - Go back to the previous directory by typing `cd ..`
-- Run `docker-compose up`, under the cloned repo's directory
+- Run `docker-compose up --build`, under the cloned repo's directory
 - Create a superuser by typing `docker-compose run --rm app sc -c "python manage.py createsuperuser"`
 - Run tests by typing `docker-compose run --rm app sc -c "python manage.py test && flake8"`
 - Go to [http://127.0.0.1:8000](http://127.0.0.1:8000) from your favorite browser and play around with the APP
