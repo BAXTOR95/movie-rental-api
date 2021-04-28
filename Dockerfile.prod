@@ -56,4 +56,4 @@ RUN ls /app
 USER user
 
 # Run application
-CMD gunicorn app.wsgi:application --log-file -
+CMD gunicorn wsgi:application --log-file -
