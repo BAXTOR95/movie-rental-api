@@ -41,3 +41,6 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 # Static files
 
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
