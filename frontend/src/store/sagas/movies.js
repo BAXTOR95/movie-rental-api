@@ -20,7 +20,27 @@ export function* fetchMoviesSaga(action) {
         yield put(actions.fetchMoviesSuccess(response.data));
     } catch (error) {
         yield put(actions.fetchMoviesFail(error));
-        yield put(actions.enqueueSnackbar(getSnackbarData('Could not fetch movie list', 'error')));
+        yield put(actions.enqueueSnackbar(getSnackbarData('Could not fetch movies list', 'error')));
+    };
+};
+
+export function* fetchMovieDetailsSaga(action) {
+    yield put(actions.fetchMovieDetailsStart());
+    const access = yield localStorage.getItem('access');
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': access ? `JWT ${ access }` : null,
+            'Accept': 'application/json'
+        }
+    };
+    const url = `/movie/movies/${ action.movieId }/`;
+    try {
+        let response = yield axios.get(url, config);
+        yield put(actions.fetchMovieDetailsSuccess(response.data));
+    } catch (error) {
+        yield put(actions.fetchMovieDetailsFail(error));
+        yield put(actions.enqueueSnackbar(getSnackbarData('Could not fetch movie details', 'error')));
     };
 };
 
@@ -39,6 +59,7 @@ export function* likeMovieSaga(action) {
     try {
         let response = yield axios.post(url, body, config);
         yield put(actions.likeMovieSuccess(response.data));
+        yield put(actions.enqueueSnackbar(getSnackbarData(`Liked movie #${ action.movieId }`, 'success')));
     } catch (error) {
         yield put(actions.likeMovieFail(error));
         yield put(actions.enqueueSnackbar(getSnackbarData('Could not like the movie', 'error')));
@@ -59,6 +80,7 @@ export function* dislikeMovieSaga(action) {
     try {
         yield axios.delete(url, config);
         yield put(actions.dislikeMovieSuccess(action.movieId));
+        yield put(actions.enqueueSnackbar(getSnackbarData(`Disliked movie #${ action.movieId }`, 'success')));
     } catch (error) {
         yield put(actions.dislikeMovieFail(error));
         yield put(actions.enqueueSnackbar(getSnackbarData('Could not dislike the movie', 'error')));
@@ -100,6 +122,7 @@ export function* rentMovieSaga(action) {
     try {
         let response = yield axios.post(url, body, config);
         yield put(actions.rentMovieSuccess(response.data));
+        yield put(actions.enqueueSnackbar(getSnackbarData(`Movie #${ action.movieId } rented`, 'success')));
     } catch (error) {
         yield put(actions.rentMovieFail(error));
         yield put(actions.enqueueSnackbar(getSnackbarData('Could not rent the movie', 'error')));
@@ -116,11 +139,11 @@ export function* returnRentedMoviesSaga(action) {
             'Accept': 'application/json'
         }
     };
-    const body = JSON.stringify({ movie: action.movieId });
     const url = `/movie/rentals/${ action.movieId }/return-movie/`;
     try {
-        const response = yield axios.post(url, body, config);
+        const response = yield axios.post(url, null, config);
         yield put(actions.returnRentedMoviesSuccess(response.data));
+        yield put(actions.enqueueSnackbar(getSnackbarData(`Movie #${ action.movieId } returned`, 'success')));
     } catch (error) {
         yield put(actions.returnRentedMoviesFail(error));
         yield put(actions.enqueueSnackbar(getSnackbarData('Could not return rented movie', 'error')));
@@ -162,6 +185,7 @@ export function* buyMovieSaga(action) {
     try {
         let response = yield axios.post(url, body, config);
         yield put(actions.buyMovieSuccess(response.data));
+        yield put(actions.enqueueSnackbar(getSnackbarData(`Movie #${ action.movieId } bought`, 'success')));
     } catch (error) {
         yield put(actions.buyMovieFail(error));
         yield put(actions.enqueueSnackbar(getSnackbarData('Could not buy the movie', 'error')));

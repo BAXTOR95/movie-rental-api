@@ -4,8 +4,9 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     movies: null,
     rentedMovies: [],
-    purchasedMovies: [],
+    boughtMovies: [],
     likedMovies: [],
+    movieData: null,
     error: null,
     loading: false
 };
@@ -23,6 +24,22 @@ const fetchMoviesSuccess = (state, action) => {
 };
 
 const fetchMoviesFail = (state, action) => {
+    return updateObject(state, { error: action.error, loading: false });
+};
+
+const fetchMovieDetailsStart = (state, action) => {
+    return updateObject(state, { error: null, loading: true });
+};
+
+const fetchMovieDetailsSuccess = (state, action) => {
+    return updateObject(state, {
+        movieData: action.movie,
+        error: null,
+        loading: false
+    });
+};
+
+const fetchMovieDetailsFail = (state, action) => {
     return updateObject(state, { error: action.error, loading: false });
 };
 
@@ -103,9 +120,10 @@ const returnRentedMoviesStart = (state, action) => {
 };
 
 const returnRentedMoviesSuccess = (state, action) => {
-    const updatedRentedMovies = [ ...state.rentedMovies ].map(movieReturned => {
-        return action.returnedMovie.find(movie => movie.id === movieReturned.id) || movieReturned;
-    });
+    const returnedMovie = action.returnedMovie
+    const index = state.rentedMovies.findIndex((rentedMovie) => rentedMovie.id === returnedMovie.id);
+    const updatedRentedMovies = [ ...state.rentedMovies ];
+    updatedRentedMovies[ index ] = returnedMovie;
     const updatedState = {
         rentedMovies: updatedRentedMovies,
         error: null,
@@ -173,6 +191,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_MOVIES_START: return fetchMoviesStart(state, action);
         case actionTypes.FETCH_MOVIES_SUCCESS: return fetchMoviesSuccess(state, action);
         case actionTypes.FETCH_MOVIES_FAIL: return fetchMoviesFail(state, action);
+        case actionTypes.FETCH_MOVIE_DETAILS_START: return fetchMovieDetailsStart(state, action);
+        case actionTypes.FETCH_MOVIE_DETAILS_SUCCESS: return fetchMovieDetailsSuccess(state, action);
+        case actionTypes.FETCH_MOVIE_DETAILS_FAIL: return fetchMovieDetailsFail(state, action);
         case actionTypes.LIKE_MOVIE_START: return likeMovieStart(state, action);
         case actionTypes.LIKE_MOVIE_SUCCESS: return likedMovieSuccess(state, action);
         case actionTypes.LIKE_MOVIE_FAIL: return likedMovieFail(state, action);

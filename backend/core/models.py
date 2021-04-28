@@ -257,7 +257,6 @@ class LikedMovie(models.Model):
         'Movie',
         on_delete=models.CASCADE
     )
-    liked = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         # if purchase price == 0 set it to rental price

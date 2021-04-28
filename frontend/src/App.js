@@ -5,7 +5,6 @@ import Logout from './containers/Auth/Logout/Logout';
 import Movies from './containers/Movies/Movies';
 import * as actions from './store/actions/index';
 import Layout from './hoc/Layout/Layout';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles } from '@material-ui/core/styles';
 
 const Auth = React.lazy(() => {
@@ -39,7 +38,7 @@ const styles = {
     'body': {
       margin: 0,
       height: '100%',
-      backgroundColor: '#fff',
+      backgroundColor: 'rgb(0,0,0)',
       fontFamily: 'sans-serif',
       overflowX: 'hidden',
     },
@@ -94,7 +93,6 @@ const App = props => {
 
   return (
     <Layout>
-      <CssBaseline />
       <Suspense fallback={ <p>Loading...</p> }>{ routes }</Suspense>
     </Layout>
   );

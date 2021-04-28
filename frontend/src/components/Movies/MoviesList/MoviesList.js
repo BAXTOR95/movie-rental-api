@@ -4,7 +4,6 @@ import {
     AppBar,
     Grid,
     TextField,
-    Container,
     GridList,
     GridListTile,
     GridListTileBar,
@@ -24,15 +23,15 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         overflow: 'hidden',
-        backgroundColor: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
     },
     searchContainerBar: {
-        backgroundColor: 'rgba(0, 0, 0, .3)',
+        backgroundColor: 'rgba(255, 255, 255, .3)',
         height: "56px",
     },
     bottomContainerBar: {
-        backgroundColor: 'rgba(0, 0, 0, .3)',
-        color: theme.palette.common.black,
+        backgroundColor: 'rgba(255, 255, 255, .3)',
+        color: theme.palette.common.white,
         height: "56px",
         textAlign: "right",
         '& > *': {
@@ -46,7 +45,7 @@ const useStyles = makeStyles(theme => ({
         height: '50% !important'
     },
     gridListTitleBar: {
-        backgroundColor: 'rgba(0, 0, 0, .3)'
+        backgroundColor: 'rgba(255, 255, 255, .3)'
     },
     gridList: {
         width: "100%",
@@ -55,7 +54,8 @@ const useStyles = makeStyles(theme => ({
     searchContainer: {
         display: "flex",
         marginLeft: "5%",
-        width: "100%"
+        width: "100%",
+        color: theme.palette.common.white,
     },
     searchIcon: {
         alignSelf: "flex-end",
@@ -68,7 +68,7 @@ const StyledTextField = withStyles((theme) => ({
         width: "200px",
         margin: "5px",
         "& .MuiInputBase-root": {
-            color: theme.palette.common.black,
+            color: theme.palette.common.white,
         }
     }
 }))(TextField);
@@ -114,6 +114,7 @@ const MoviesList = (props) => {
             title,
             image,
             stock,
+            likes
         } = movie;
 
         return (
@@ -121,7 +122,7 @@ const MoviesList = (props) => {
                 <img src={ image } alt={ title } />
                 <GridListTileBar
                     title={ toFirstCharUppercase(title) }
-                    subtitle={ <span>stock: { stock }</span> }
+                    subtitle={ <span>Stock: { stock } | Likes: { likes }</span> }
                     className={ classes.gridListTitleBar }
                     actionIcon={
                         (
@@ -164,7 +165,7 @@ const MoviesList = (props) => {
             <GridList cols={ 3 } className={ classes.gridList }>
                 { movies && !loading ? (
                     movies.results.map(movie =>
-                        movie.title.includes(filter.toLowerCase()) &&
+                        movie.title.toLowerCase().includes(filter.toLowerCase()) &&
                         getMovieCard(movie)
                     )
                 ) : (
@@ -186,8 +187,6 @@ const MoviesList = (props) => {
                     </Grid>
                 </Grid>
             </AppBar>
-            {/* <Container position="static" className={ classes.bottomContainerBar }>
-            </Container> */}
         </div>
     );
 }

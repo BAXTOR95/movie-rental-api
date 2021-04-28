@@ -14,6 +14,7 @@ import {
 
 import {
     fetchMoviesSaga,
+    fetchMovieDetailsSaga,
     likeMovieSaga,
     dislikeMovieSaga,
     fetchLikedMoviesSaga,
@@ -40,6 +41,7 @@ export function* watchAuth() {
 export function* watchMovies() {
     yield all([
         takeEvery(actionTypes.FETCH_MOVIES, fetchMoviesSaga),
+        takeEvery(actionTypes.FETCH_MOVIE_DETAILS, fetchMovieDetailsSaga),
         takeLatest(actionTypes.LIKE_MOVIE, likeMovieSaga),
         takeLatest(actionTypes.DISLIKE_MOVIE, dislikeMovieSaga),
         takeEvery(actionTypes.FETCH_LIKED_MOVIES, fetchLikedMoviesSaga),

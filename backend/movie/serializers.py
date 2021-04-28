@@ -98,5 +98,5 @@ class LikedMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LikedMovie
-        fields = ('id', 'user', 'movie', 'liked')
-        read_only_fields = ('id', 'user', 'liked')
+        fields = ('id', 'user', 'movie')
+        read_only_fields = ('id', 'user')

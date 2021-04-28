@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { SnackbarProvider } from 'notistack';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -27,6 +29,12 @@ const store = createStore(rootReducer, composeEnhancers(
   applyMiddleware(sagaMiddleware)
 ));
 
+const theme = createMuiTheme({
+  palette: {
+    type: "dark",
+  }
+});
+
 sagaMiddleware.run(watchAuth);
 sagaMiddleware.run(watchMovies);
 
@@ -35,7 +43,10 @@ ReactDOM.render(
     <SnackbarProvider maxSnack={ 3 }>
       <BrowserRouter>
         <React.StrictMode>
-          <App />
+          <ThemeProvider theme={ theme }>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
         </React.StrictMode>
       </BrowserRouter>
     </SnackbarProvider>

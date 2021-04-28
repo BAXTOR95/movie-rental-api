@@ -11,11 +11,13 @@ import MuiTypography from '@material-ui/core/Typography';
 import Notifier from '../../components/Notifier/Notifier';
 import MoviesList from '../../components/Movies/MoviesList/MoviesList';
 import MovieDetail from '../../components/Movies/MovieDetail/MovieDetail';
+import RentedMoviesList from '../../components/Movies/RentedMoviesList/RentedMoviesList';
+import BoughtMoviesList from '../../components/Movies/BoughtMoviesList/BoughtMoviesList';
 
 const Accordion = withStyles({
     root: {
-        backgroundColor: 'rgb(0, 0, 0, .01)',
-        border: '1px solid rgba(26, 53, 88, .125)',
+        backgroundColor: 'rgb(0, 0, 0)',
+        border: '1px solid rgba(255, 255, 255, .125)',
         boxShadow: 'none',
         '&:not(:last-child)': {
             borderBottom: 0,
@@ -32,8 +34,8 @@ const Accordion = withStyles({
 
 const AccordionSummary = withStyles({
     root: {
-        backgroundColor: 'rgba(0, 0, 0, .3)',
-        borderBottom: '1px solid rgba(26, 53, 88 .125)',
+        backgroundColor: 'rgba(255, 255, 255, .3)',
+        borderBottom: '1px solid rgba(255, 255, 255 .125)',
         marginBottom: -1,
         minHeight: 56,
         '&$expanded': {
@@ -56,12 +58,15 @@ const AccordionDetails = withStyles((theme) => ({
 
 const Typography = withStyles((theme) => ({
     root: {
-        color: theme.palette.common.black
+        color: theme.palette.common.white
     }
 }))(MuiTypography);
 
 export const Movies = props => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const movieData = useSelector(state => state.movies.movieData);
+    const boughtMovies = useSelector(state => state.movies.boughtMovies);
+    const rentedMovies = useSelector(state => state.movies.rentedMovies);
     const [ expanded, setExpanded ] = React.useState('panel1');
 
     const handleChange = (panel) => (event, newExpanded) => {
@@ -81,10 +86,10 @@ export const Movies = props => {
                             <Typography>Movie Detail</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {/* <Route
+                            <Route
                                 path={ '/:movieId' }
-                                component={ MovieDetail } /> */}
-                            { !isAuthenticated && <Typography>Select a movie to see it's details</Typography> }
+                                component={ MovieDetail } />
+                            { !isAuthenticated && !movieData && <Typography>Select a movie to see it's details</Typography> }
                         </AccordionDetails>
                     </Accordion>
                     <Accordion square expanded={ expanded === 'panel2' } onChange={ handleChange('panel2') }>
@@ -92,8 +97,8 @@ export const Movies = props => {
                             <Typography>Rented Movies</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {/* Rented movies list */ }
-                            { !isAuthenticated && <Typography>Login to see the list of rented movies</Typography> }
+                            <RentedMoviesList />
+                            { !isAuthenticated && !rentedMovies && <Typography>Login to see the list of rented movies</Typography> }
                         </AccordionDetails>
                     </Accordion>
                     <Accordion square expanded={ expanded === 'panel3' } onChange={ handleChange('panel3') }>
@@ -101,8 +106,8 @@ export const Movies = props => {
                             <Typography>Bought Movies</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {/* Bought movies list */ }
-                            { !isAuthenticated && <Typography>Login to see the list of bought movies</Typography> }
+                            <BoughtMoviesList />
+                            { !isAuthenticated && !boughtMovies && <Typography>Login to see the list of bought movies</Typography> }
                         </AccordionDetails>
                     </Accordion>
                 </Grid>

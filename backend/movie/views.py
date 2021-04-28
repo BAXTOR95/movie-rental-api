@@ -256,6 +256,13 @@ class RentalViewSet(viewsets.ModelViewSet):
         """Return a movie
         """
         rental = self.get_object()
+
+        if rental.date_returned:
+            return Response(
+                'You already returned this movie',
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         serializer = self.get_serializer(
             rental,
             data=request.data
