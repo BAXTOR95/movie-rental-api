@@ -258,10 +258,6 @@ const Auth = props => {
         return <Redirect to='/' />
     }
 
-    if (accountCreated) {
-        setIsSignup(false);
-    }
-
     return (
         <React.Fragment>
             <Notifier />
