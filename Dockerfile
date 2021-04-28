@@ -40,4 +40,4 @@ RUN chmod -R 755 /vol/web
 USER user
 
 # Run application
-CMD gunicorn config.wsgi:application
+CMD gunicorn app.wsgi:application
