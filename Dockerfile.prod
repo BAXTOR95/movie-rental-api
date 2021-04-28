@@ -34,9 +34,9 @@ WORKDIR /app
 # copy front end to compile it
 COPY ./frontend /app
 # Install front-end dependencies.
-RUN $HOME/.yarn/bin/yarn install
+RUN yarn install
 # Compile static files
-RUN $HOME/.yarn/bin/yarn build:prod
+RUN yarn build:prod
 
 # Have to move all static files other than index.html to root/
 # for whitenoise middleware
