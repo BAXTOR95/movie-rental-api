@@ -12,14 +12,13 @@ ENV REACT_APP_DJANGO_SERVER https://django-rental-movie-app.herokuapp.com/api/
 # install system-wide dependencies
 
 # Install curl, node, & yarn
-RUN apt-get install -y curl \
+RUN apk add --update curl \
     && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install -y nodejs \
+    && apk add --update nodejs \
     && curl -o- -L https://yarnpkg.com/install.sh | bash
 
 RUN apk update
 RUN apk add postgresql-client jpeg-dev libjpeg
-RUN apk add --update nodejs nodejs-npm
 RUN apk add --virtual .tmp-build-deps \
       gcc libc-dev linux-headers postgresql-dev musl-dev \
       zlib zlib-dev python3-dev libffi-dev openssl-dev cargo
