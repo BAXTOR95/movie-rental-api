@@ -51,9 +51,8 @@ RUN chmod -R 755 /vol/web
 RUN python manage.py collectstatic --noinput --clear
 
 RUN ls
-RUN ls /app
 
 USER user
 
 # Run application
-CMD gunicorn wsgi:application --log-file -
+CMD gunicorn app.wsgi:application --log-file -
