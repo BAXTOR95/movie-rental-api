@@ -147,3 +147,18 @@ class ModelTests(TestCase):
             str(purchase),
             f'{user.email}-{movie.title}-{purchase.date_bought}'
         )
+
+    def test_liked_movie_str(self):
+        """Test the liked movie string representation
+        """
+        user = sample_user()
+        movie = sample_movie(user=user)
+        liked_movie = models.LikedMovie.objects.create(
+            user=user,
+            movie=movie
+        )
+
+        self.assertEqual(
+            str(liked_movie),
+            f'{user.email}-{movie.title}'
+        )
