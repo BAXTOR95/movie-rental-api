@@ -13,7 +13,7 @@ ENV REACT_APP_DJANGO_SERVER https://django-rental-movie-app.herokuapp.com/api/
 
 # Install curl, node, & yarn
 RUN apk update
-RUN apk add --update curl
+RUN apk add --update bash curl
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apk add --update nodejs
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
