@@ -164,7 +164,6 @@ ALTER SEQUENCE public.core_genre_id_seq OWNED BY public.core_genre.id;
 
 CREATE TABLE public.core_likedmovie (
     id integer NOT NULL,
-    liked boolean NOT NULL,
     movie_id integer NOT NULL,
     user_id integer NOT NULL
 );
@@ -896,7 +895,14 @@ COPY public.core_genre (id, name, user_id) FROM stdin;
 -- Data for Name: core_likedmovie; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.core_likedmovie (id, liked, movie_id, user_id) FROM stdin;
+COPY public.core_likedmovie (id, movie_id, user_id) FROM stdin;
+6	2	1
+7	3	1
+8	4	1
+10	1	1
+13	4	2
+14	1	2
+15	2	2
 \.
 
 
@@ -905,10 +911,10 @@ COPY public.core_likedmovie (id, liked, movie_id, user_id) FROM stdin;
 --
 
 COPY public.core_movie (id, title, description, link, image, stock, rental_price, sale_price, availability, user_id) FROM stdin;
-3	The Great Gatsby	A writer and wall street trader, Nick, finds himself drawn to the past and lifestyle of his millionaire neighbor, Jay Gatsby.	https://www.imdb.com/title/tt1343092/	uploads/movie/42e810c0-4190-4238-a20f-865b94bb1555.png	0	2.50	8.50	f	1
-1	Interstellar	A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.	https://www.imdb.com/title/tt0816692/	uploads/movie/fa9263a6-d238-4e77-ae28-fc1c76a50561.jpg	11	2.50	12.00	t	1
-2	Avengers: Infinity War	The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.	https://www.imdb.com/title/tt4154756/	uploads/movie/a445e1ee-7538-401d-8a16-bc5adcbab581.jpg	9	2.50	12.00	t	1
-4	The Dark Knight	When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.	https://www.imdb.com/title/tt0468569/	uploads/movie/85929132-78df-48d6-a030-e592615c8742.jpg	10	2.10	10.00	t	1
+4	The Dark Knight	When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.	https://www.imdb.com/title/tt0468569/	uploads/movie/468bc165-6d93-4552-8a38-9e1cbc4d97c0.jpg	4	2.10	10.00	t	1
+3	The Great Gatsby	A writer and wall street trader, Nick, finds himself drawn to the past and lifestyle of his millionaire neighbor, Jay Gatsby.	https://www.imdb.com/title/tt1343092/	uploads/movie/f4920cb0-cdc0-48f5-89fb-f87136845618.png	0	2.50	8.50	f	1
+2	Avengers: Infinity War	The Avengers and their allies must be willing to sacrifice all in an attempt to defeat the powerful Thanos before his blitz of devastation and ruin puts an end to the universe.	https://www.imdb.com/title/tt4154756/	uploads/movie/875fc298-d0fb-48b8-a261-86ebde74c5c0.jpg	9	2.50	12.00	t	1
+1	Interstellar	A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.	https://www.imdb.com/title/tt0816692/	uploads/movie/039d9017-1e53-4ff4-be9d-8c878289af38.jpg	11	2.50	12.00	t	1
 \.
 
 
@@ -936,7 +942,10 @@ COPY public.core_movie_genre (id, movie_id, genre_id) FROM stdin;
 --
 
 COPY public.core_purchase (id, date_bought, purchase_price, movie_id, user_id) FROM stdin;
-1	2021-04-27 05:34:23.636247+00	12.00	2	2
+4	2021-04-27 23:56:38.590083+00	10.00	4	2
+5	2021-04-28 00:00:51.211155+00	12.00	1	2
+6	2021-04-28 01:39:03.574404+00	10.00	4	2
+7	2021-04-28 04:09:11.068243+00	10.00	4	2
 \.
 
 
@@ -945,9 +954,41 @@ COPY public.core_purchase (id, date_bought, purchase_price, movie_id, user_id) F
 --
 
 COPY public.core_rental (id, date_out, date_returned, daily_rental_fee, movie_id, user_id) FROM stdin;
-1	2021-04-27 05:06:16.505745+00	2021-04-27 05:19:03.023186+00	2.50	1	2
 2	2021-04-27 14:19:07.832531+00	2021-04-27 14:19:42.18139+00	2.50	2	2
 3	2021-04-27 14:29:30.542002+00	2021-04-27 14:30:21.687346+00	2.10	4	2
+5	2021-04-28 01:34:05.762723+00	2021-04-28 01:58:29.627753+00	2.50	2	2
+4	2021-04-28 00:00:18.885923+00	2021-04-28 01:58:29.629662+00	2.10	4	2
+6	2021-04-28 01:39:10.776075+00	2021-04-28 02:01:48.513291+00	2.10	4	2
+9	2021-04-28 02:02:08.587755+00	2021-04-28 02:13:10.777382+00	2.50	2	2
+8	2021-04-28 02:02:05.785642+00	2021-04-28 02:13:10.78215+00	2.50	1	2
+7	2021-04-28 02:02:02.383077+00	2021-04-28 02:13:10.7801+00	2.10	4	2
+12	2021-04-28 02:14:17.280199+00	2021-04-28 02:15:36.078749+00	2.10	4	2
+10	2021-04-28 02:14:09.189382+00	2021-04-28 02:15:36.082276+00	2.50	2	2
+11	2021-04-28 02:14:14.203164+00	2021-04-28 02:15:36.086612+00	2.50	1	2
+14	2021-04-28 02:20:26.915155+00	2021-04-28 02:20:42.021565+00	2.50	2	2
+13	2021-04-28 02:19:39.218028+00	2021-04-28 02:26:00.162592+00	2.50	2	2
+15	2021-04-28 02:28:40.976207+00	2021-04-28 02:29:08.13084+00	2.50	1	2
+16	2021-04-28 02:36:42.871814+00	2021-04-28 02:36:56.132211+00	2.50	1	2
+17	2021-04-28 02:37:58.711266+00	2021-04-28 02:38:17.710393+00	2.10	4	2
+18	2021-04-28 02:38:02.726802+00	2021-04-28 02:38:17.708672+00	2.50	2	2
+19	2021-04-28 02:39:48.380762+00	2021-04-28 02:40:01.626944+00	2.50	1	2
+20	2021-04-28 02:39:51.717101+00	2021-04-28 02:40:01.629441+00	2.50	2	2
+21	2021-04-28 02:40:42.719752+00	2021-04-28 02:41:04.647265+00	2.50	1	2
+22	2021-04-28 02:44:48.229755+00	2021-04-28 02:44:55.119868+00	2.10	4	2
+23	2021-04-28 02:54:11.268233+00	2021-04-28 02:54:18.117311+00	2.50	2	2
+24	2021-04-28 02:58:58.560514+00	2021-04-28 02:59:41.772441+00	2.50	2	2
+25	2021-04-28 02:59:02.779567+00	2021-04-28 02:59:41.770384+00	2.10	4	2
+28	2021-04-28 03:00:31.261123+00	2021-04-28 03:00:44.258617+00	2.10	4	2
+27	2021-04-28 03:00:28.76016+00	2021-04-28 03:00:44.260957+00	2.50	1	2
+26	2021-04-28 03:00:24.011987+00	2021-04-28 03:00:44.262933+00	2.50	2	2
+1	2021-04-27 05:06:16.505745+00	2021-04-28 03:02:58.373609+00	2.50	1	2
+29	2021-04-28 03:02:31.622306+00	2021-04-28 03:14:41.073138+00	2.10	4	2
+30	2021-04-28 03:13:13.367619+00	2021-04-28 03:14:41.075416+00	2.10	4	2
+31	2021-04-28 03:24:04.843661+00	2021-04-28 03:44:07.586199+00	2.10	4	2
+32	2021-04-28 03:43:54.234555+00	2021-04-28 03:44:07.589246+00	2.10	4	2
+33	2021-04-28 03:46:11.764875+00	2021-04-28 03:46:19.068047+00	2.10	4	2
+34	2021-04-28 03:47:04.006016+00	2021-04-28 03:47:10.946925+00	2.10	4	2
+35	2021-04-28 04:09:13.405794+00	\N	2.10	4	2
 \.
 
 
@@ -986,6 +1027,13 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 2	2021-04-27 04:01:14.9141+00	2	Avengers: Infinity War	1	[{"added": {}}]	10	1
 3	2021-04-27 04:02:05.097837+00	3	The Great Gatsby	1	[{"added": {}}]	10	1
 4	2021-04-27 04:03:12.247813+00	4	The Dark Knight	1	[{"added": {}}]	10	1
+5	2021-04-27 18:45:19.351636+00	2	Avengers: Infinity War	2	[{"changed": {"fields": ["Image"]}}]	10	1
+6	2021-04-27 18:45:28.934129+00	4	The Dark Knight	2	[{"changed": {"fields": ["Image"]}}]	10	1
+7	2021-04-27 18:45:39.164635+00	3	The Great Gatsby	2	[{"changed": {"fields": ["Image"]}}]	10	1
+8	2021-04-27 18:45:48.620468+00	1	Interstellar	2	[{"changed": {"fields": ["Image"]}}]	10	1
+9	2021-04-27 23:50:52.610566+00	2	baxtor95@gmail.com-The Dark Knight-2021-04-27 23:50:00.537261+00:00	3		12	1
+10	2021-04-27 23:50:57.388601+00	1	baxtor95@gmail.com-Avengers: Infinity War-2021-04-27 05:34:23.636247+00:00	3		12	1
+11	2021-04-27 23:53:31.784444+00	3	baxtor95@gmail.com-The Dark Knight-2021-04-27 23:52:35.110494+00:00	3		12	1
 \.
 
 
@@ -1044,6 +1092,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 27	token_blacklist	0005_remove_outstandingtoken_jti	2021-04-27 03:04:17.60246+00
 28	token_blacklist	0006_auto_20171017_2113	2021-04-27 03:04:17.621649+00
 29	token_blacklist	0007_auto_20171017_2214	2021-04-27 03:04:17.692742+00
+30	core	0005_remove_likedmovie_liked	2021-04-27 21:45:11.912984+00
 \.
 
 
@@ -1076,6 +1125,24 @@ COPY public.token_blacklist_outstandingtoken (id, token, created_at, expires_at,
 37	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTYxNzM2MCwianRpIjoiOTg1YjZhOTFmODgwNDgyNGEwYThhM2YxY2UyMzhkNjIiLCJ1c2VyX2lkIjoyfQ.vov7-NQytcvfSO0HuivI83_27hcsF3V5L00fuomo118	2021-04-27 13:42:40.94185+00	2021-04-28 13:42:40+00	2	985b6a91f8804824a0a8a3f1ce238d62
 38	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTYxOTUwOCwianRpIjoiMDA0MGE5MGExM2RlNDFmNWFlMWY5NmJkMDk3Y2Y3NDYiLCJ1c2VyX2lkIjoyfQ.Pb-1inocaAl4UDd5swrrfrFDFECjVO6KruA13gzHq9k	2021-04-27 14:18:28.483204+00	2021-04-28 14:18:28+00	2	0040a90a13de41f5ae1f96bd097cf746
 39	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTYyMzYzNSwianRpIjoiNmVkMjdmODUyZmEwNGNkODk2MGI2Y2I4MzIzMDcyOTciLCJ1c2VyX2lkIjoyfQ.2VXfAS2tbhUsYyODhF7aSFozHvh0dgzA5lKctTECnw0	2021-04-27 15:27:15.923904+00	2021-04-28 15:27:15+00	2	6ed27f852fa04cd8960b6cb832307297
+40	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTYyNzE0MSwianRpIjoiNGM4MzNmY2E3ZjZhNGNhOWI3YTdjMzVmMTgzYTMyNzYiLCJ1c2VyX2lkIjoyfQ.ATyyRhjl84dP15xSV5M0lheOREVGgtmdb9ZSEKUfeec	2021-04-27 16:25:41.178682+00	2021-04-28 16:25:41+00	2	4c833fca7f6a4ca9b7a7c35f183a3276
+41	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTYyNzk4MiwianRpIjoiOThlMWQyN2FjN2NjNDk4ZTkwZWY3ZmJmMjU5OGU2MmYiLCJ1c2VyX2lkIjoyfQ.H5v1R2sdd_Vkgvn0ttqsABRrmJb4UuYW-d1zk1_jYtY	2021-04-27 16:39:42.459799+00	2021-04-28 16:39:42+00	2	98e1d27ac7cc498e90ef7fbf2598e62f
+42	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTYzNzk2MCwianRpIjoiOTQ3NThlMTAyZTZmNDdiMWJmOTVkODk5YmZlOTU3MDYiLCJ1c2VyX2lkIjoyfQ.HOzjed4oOKKfJlvcxZOTEejTwLFGHgo38oRtp9AIKlU	2021-04-27 19:26:00.823065+00	2021-04-28 19:26:00+00	2	94758e102e6f47b1bf95d899bfe95706
+43	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY0NDE5NCwianRpIjoiMjM1MDhjNGY5ZGM3NDQ2YmI5Yjg5MTM3MjMwY2RjMjUiLCJ1c2VyX2lkIjoxfQ.gsTior2IgVRlrzvx5isk_h-sVlTRpmxnWdY8GxZ4zCo	2021-04-27 21:09:54.946398+00	2021-04-28 21:09:54+00	1	23508c4f9dc7446bb9b89137230cdc25
+44	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY0NDg2NiwianRpIjoiOTlhNTBkZGRkOWEyNDhjZWI4YjMzZmE1YmMyMjM3ZmUiLCJ1c2VyX2lkIjoxfQ.wYFeQIQT721u9F3tyZC1_fTD3S9AaXHi3oPXdooGOqo	2021-04-27 21:21:06.068041+00	2021-04-28 21:21:06+00	1	99a50dddd9a248ceb8b33fa5bc2237fe
+45	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY0ODkyMiwianRpIjoiNDExMzhhMmViY2U0NDY2ZDg4ZjNkZjc2Mjg5NTRlOWYiLCJ1c2VyX2lkIjoxfQ.Nm2RNPCKE5lj4rzh41e5GUFzda9vPCtEIfkHBobW2Iw	2021-04-27 22:28:42.635999+00	2021-04-28 22:28:42+00	1	41138a2ebce4466d88f3df7628954e9f
+46	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY1MDk4MywianRpIjoiNzk0ZjY5YmE5NmZjNDY4N2E3YzAxZmNjOGQ0ZDNlMzgiLCJ1c2VyX2lkIjoyfQ.2WR0vYqMSfg_aqpiWPkSDAbegLOlEEGJ_FT_g-q86Dk	2021-04-27 23:03:03.389261+00	2021-04-28 23:03:03+00	2	794f69ba96fc4687a7c01fcc8d4d3e38
+47	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY1NjEwMywianRpIjoiYTAxNjZiMDkwNjY5NGM4Y2FmM2QxMDhjOTMxZmI1YmYiLCJ1c2VyX2lkIjoyfQ.oioZIJkjC0d4IfaExAL9kLTNp72DBVueOV8Loa9-pfI	2021-04-28 00:28:23.206881+00	2021-04-29 00:28:23+00	2	a0166b0906694c8caf3d108c931fb5bf
+48	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY1NzA5OCwianRpIjoiMzFjNjdlYjgxNTIyNDNkOWJjOTlhZTFmZmYwYTJmODciLCJ1c2VyX2lkIjoyfQ.l6g6TeSo_g03wWsTqXFwYuOA_XMqPLti4tnLKljy3xE	2021-04-28 00:44:58.097284+00	2021-04-29 00:44:58+00	2	31c67eb8152243d9bc99ae1fff0a2f87
+49	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2MDg0NSwianRpIjoiZmM4NDgyMmQ0N2I1NDZjYTg2ZDA4MjdiZWU3NjIzYWIiLCJ1c2VyX2lkIjoyfQ.nD9xZO7I4fyelnEfC-jtCaD8PFXnI0dcfJFhmMpG6E8	2021-04-28 01:47:25.487091+00	2021-04-29 01:47:25+00	2	fc84822d47b546ca86d0827bee7623ab
+50	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2MjM4MSwianRpIjoiNjljYTVkN2VjNDk5NGQ1M2E3MzllZWIzZmE5N2RhYWUiLCJ1c2VyX2lkIjoyfQ.M_K6XrvPo7Gn6aAPglsTbYYDFmFhjFa9IcA8FP5RqaE	2021-04-28 02:13:01.129626+00	2021-04-29 02:13:01+00	2	69ca5d7ec4994d53a739eeb3fa97daae
+51	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2Mjc5MSwianRpIjoiNWUwM2ZjZTBmM2I4NDVmNWEzMDEyYjVmZGU2ZmNhZmUiLCJ1c2VyX2lkIjoyfQ.1f4m4SP9xPlUQYt1SQn-ReT8ZDO1V5kcA0dPMTXJ5VQ	2021-04-28 02:19:51.669292+00	2021-04-29 02:19:51+00	2	5e03fce0f3b845f5a3012b5fde6fcafe
+52	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2MzEwMSwianRpIjoiMGUxYTI0Y2M3ODA0NGRkMDkzNWFhYWY5MGVkZmRjMDUiLCJ1c2VyX2lkIjoxfQ.E5kESYLHAtNlMDeJJFuMJ-mufegmh82YmYth8E-yS6U	2021-04-28 02:25:01.499338+00	2021-04-29 02:25:01+00	1	0e1a24cc78044dd0935aaaf90edfdc05
+53	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2MzExOCwianRpIjoiYjI5NjAwM2FiMWE0NDY1YzkwMThlMTM5Y2I4MTc5NGIiLCJ1c2VyX2lkIjoyfQ.EgSMGPXJiZYaOWMsoHQN4Ws-xzbxPstuifhKjhWjZAs	2021-04-28 02:25:18.340351+00	2021-04-29 02:25:18+00	2	b296003ab1a4465c9018e139cb81794b
+54	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2Njc3MCwianRpIjoiZGZlZTU4YTAxZmQ5NDE0MjgzNzdhNDY2YzVhYTU5ZWYiLCJ1c2VyX2lkIjoyfQ.sWrZSKrpqGrn97ST-b8CIQ30Z5qmKGQL2AwYaWtKXtI	2021-04-28 03:26:10.457409+00	2021-04-29 03:26:10+00	2	dfee58a01fd941428377a466c5aa59ef
+55	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2ODYxNCwianRpIjoiMGZmMWZjMzdhZDE1NDdjNTk1MTdjMzNlMjUxZDQ1MjciLCJ1c2VyX2lkIjoyfQ.BaL_avO5-OWG8ItIb-0JztAExrfp8G0GvofFb-FLUHQ	2021-04-28 03:56:54.178974+00	2021-04-29 03:56:54+00	2	0ff1fc37ad1547c59517c33e251d4527
+56	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2ODg5OSwianRpIjoiMDcwNjJhN2YxMmU5NGYzZWJlMWM4NjhlYWE3YjdkYjgiLCJ1c2VyX2lkIjoyfQ.uOIRIDZa-Ba7PLTagHE2zFwqWu4G5fe2oLwdjCmy_Lw	2021-04-28 04:01:39.936584+00	2021-04-29 04:01:39+00	2	07062a7f12e94f3ebe1c868eaa7b7db8
+57	eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxOTY2OTE5OCwianRpIjoiNzI1ZTYwMGM3NDM4NDI2Nzg2YThmMWQyMmYyNjQ2YzMiLCJ1c2VyX2lkIjoyfQ.LEfcdUdt1q8FijQWk7IlE9GJtIQCbZIWDeizgG7o8so	2021-04-28 04:06:38.850777+00	2021-04-29 04:06:38+00	2	725e600c7438426786a8f1d22f2646c3
 \.
 
 
@@ -1111,7 +1178,7 @@ SELECT pg_catalog.setval('public.core_genre_id_seq', 35, true);
 -- Name: core_likedmovie_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.core_likedmovie_id_seq', 1, true);
+SELECT pg_catalog.setval('public.core_likedmovie_id_seq', 15, true);
 
 
 --
@@ -1132,14 +1199,14 @@ SELECT pg_catalog.setval('public.core_movie_id_seq', 4, true);
 -- Name: core_purchase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.core_purchase_id_seq', 1, true);
+SELECT pg_catalog.setval('public.core_purchase_id_seq', 7, true);
 
 
 --
 -- Name: core_rental_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.core_rental_id_seq', 3, true);
+SELECT pg_catalog.setval('public.core_rental_id_seq', 35, true);
 
 
 --
@@ -1167,7 +1234,7 @@ SELECT pg_catalog.setval('public.core_user_user_permissions_id_seq', 1, false);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 4, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 11, true);
 
 
 --
@@ -1181,7 +1248,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 13, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 29, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 30, true);
 
 
 --
@@ -1195,7 +1262,7 @@ SELECT pg_catalog.setval('public.token_blacklist_blacklistedtoken_id_seq', 1, fa
 -- Name: token_blacklist_outstandingtoken_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.token_blacklist_outstandingtoken_id_seq', 39, true);
+SELECT pg_catalog.setval('public.token_blacklist_outstandingtoken_id_seq', 57, true);
 
 
 --
