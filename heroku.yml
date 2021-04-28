@@ -4,4 +4,5 @@ build:
 release:
   image: web
   command:
+    - django-admin makemigrations core --noinput
     - django-admin migrate --noinput
