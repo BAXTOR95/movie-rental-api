@@ -5,6 +5,9 @@ LABEL MAINTAINER="Brian Arriaga brian.arriaga@gmail.com"
 # set system-wide environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE app.settings.production
+
+EXPOSE 8000
 
 # install system-wide dependencies
 COPY ./requirements.txt /requirements.txt
@@ -37,4 +40,4 @@ RUN chmod -R 755 /vol/web
 USER user
 
 # Run application
-CMD gunicorn config.wsgi:application --bind 0.0.0.0:8000
+CMD gunicorn config.wsgi:application
