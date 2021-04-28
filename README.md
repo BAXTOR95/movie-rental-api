@@ -25,7 +25,7 @@ Movie Rental API made with Django and REST Framework
 - Database will be persisted in `postgres_data` folder, in case you restart docker services
 - You can try to recreate the database with the database dump located at `backend` in a file named `pg_dump` by running the following command `pg_dump -U $DB_USER $DB_NAME -h $DB_HOST < pg_dump.sql`
 - When you are done playing around, run `docker-compose down`
-- Use POSTMAN or other tools to test API Endpoints. Import `Django Movie Rental API.postman_collection.json` collection file to POSTMAN to test the different API Endpoints
+- Use POSTMAN or other tools to test API Endpoints. Import `django_movie_rental_api.postman_collection.json` collection file to POSTMAN to test the different API Endpoints
 
 ## API Endpoints
 
