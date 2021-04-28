@@ -4,6 +4,8 @@
 
 Movie Rental API made with Django and REST Framework
 
+[Live-demo](http://django-rental-movie-app.herokuapp.com)
+
 ### Which Third Party Libraries Are Used?
 
 - Django Rest Framework for the backend
