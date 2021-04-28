@@ -6,6 +6,7 @@ LABEL MAINTAINER="Brian Arriaga brian.arriaga@gmail.com"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE app.settings.production
+ENV WEB_CONCURRENCY 3
 
 EXPOSE 8000
 
@@ -52,4 +53,4 @@ RUN python manage.py collectstatic --noinput --clear
 USER user
 
 # Run application
-CMD gunicorn app.wsgi --log-file -
+CMD gunicorn app.wsgi:application --log-file -
