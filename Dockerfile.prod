@@ -50,6 +50,9 @@ RUN chmod -R 755 /vol/web
 # Install assets
 RUN python manage.py collectstatic --noinput --clear
 
+RUN ls
+RUN ls /app
+
 USER user
 
 # Run application
