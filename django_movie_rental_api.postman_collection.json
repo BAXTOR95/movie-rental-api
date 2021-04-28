@@ -89,7 +89,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"MyAwesomePassword123\"\r\n}"
+					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"superpassword\"\r\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/auth/jwt/create/",
@@ -310,7 +310,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzgyNzg5LCJqdGkiOiJiZTcxNWRlYTI2MWQ0MzRmOTdkN2M1YmFjODBmMjBjZCIsInVzZXJfaWQiOjF9.xfzX0RIIspjAlOw4GuYQFjlgwLrVuo5ZlTRs1GRdx5E",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDk5MTY4LCJqdGkiOiJkZTMyYjIzNmJiNWI0NDg4OTRmNGQ4ZDYxYTA3ZDNhZSIsInVzZXJfaWQiOjF9.QtFuIdm6Kmyo3zQEj5dabKFgz2qX_08QrWkiFC7e134",
 						"type": "text"
 					},
 					{
@@ -321,7 +321,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Classic\"\r\n}"
+					"raw": "{\r\n    \"name\": \"Comedy Drama\"\r\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/movie/genres/",
@@ -508,6 +508,32 @@
 			"response": []
 		},
 		{
+			"name": "Get Movie Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/movie/movies/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"movie",
+						"movies",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Movies [ADMIN]",
 			"request": {
 				"method": "GET",
@@ -519,7 +545,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5Mzk3NzU4LCJqdGkiOiI4MTZjYmViYmU5MTM0MmQyYmMyZjA1YjkyNTk4MmQ1ZiIsInVzZXJfaWQiOjF9.niqPWaN80SWdfz6LnDNQFpzYP5EgrZT91-Mw4RGyRHI",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDk5MTY4LCJqdGkiOiJkZTMyYjIzNmJiNWI0NDg4OTRmNGQ4ZDYxYTA3ZDNhZSIsInVzZXJfaWQiOjF9.QtFuIdm6Kmyo3zQEj5dabKFgz2qX_08QrWkiFC7e134",
 						"type": "text"
 					},
 					{
@@ -665,47 +691,6 @@
 			"response": []
 		},
 		{
-			"name": "Get Movies Rented",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5MzkxNTIyLCJqdGkiOiIxYmVjNmI3ZjZjMDk0MzUyOGEyOTU4OTc1YTU3ZmM2MyIsInVzZXJfaWQiOjN9.mrRNjq1_S83yhS3J4_QUXdUdruJcY5fR4BrqaKMPpbU",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/movie/rentals/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"movie",
-						"rentals",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Rent a Movie",
 			"request": {
 				"method": "POST",
@@ -717,7 +702,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA2Mzc1LCJqdGkiOiIyNDQyMWZlOWRjNDY0YzgyOGQ0ZmU2ZjVkZGNkYzllYiIsInVzZXJfaWQiOjN9.VLKnJkjBg6Arig4nLwfmLsW9ZtJNnK0vjoJ0nUl2NaI",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTc5OTkxLCJqdGkiOiI3YWI0MjQ2MzJjOGE0ODY5ODE2MDcyYWI3NTY0M2JmNSIsInVzZXJfaWQiOjJ9.UKnjT8jRzWPAfCxmKPyIkq1l4px_llkYnGBgHW96AKI",
 						"type": "text"
 					},
 					{
@@ -728,7 +713,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"movie\": 4\r\n}"
+					"raw": "{\r\n    \"movie\": 2\r\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/movie/rentals/",
@@ -762,7 +747,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA2Mzc1LCJqdGkiOiIyNDQyMWZlOWRjNDY0YzgyOGQ0ZmU2ZjVkZGNkYzllYiIsInVzZXJfaWQiOjN9.VLKnJkjBg6Arig4nLwfmLsW9ZtJNnK0vjoJ0nUl2NaI",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTczMzAzLCJqdGkiOiIzODFhY2ZjZDkxNGQ0ZDY4YmZjYTA0ZWU2OGQ1YWQ5ZSIsInVzZXJfaWQiOjJ9.Mdlx_uePv-teouDYxJYmc3cFSqrIZVucu8g3HHHE7Ww",
 						"type": "text"
 					},
 					{
@@ -845,7 +830,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA2Mzc1LCJqdGkiOiIyNDQyMWZlOWRjNDY0YzgyOGQ0ZmU2ZjVkZGNkYzllYiIsInVzZXJfaWQiOjN9.VLKnJkjBg6Arig4nLwfmLsW9ZtJNnK0vjoJ0nUl2NaI",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTAyNjYyLCJqdGkiOiJmYTcyNzI1NTdhMWE0Yzg5OTA3ZjY4Y2Q0NGRhZWJlZiIsInVzZXJfaWQiOjJ9.4D2_s6ypjciXlAn-tyXyAQLf1nH2Nv1GuPR128IFa9E",
 						"type": "text"
 					},
 					{
@@ -854,12 +839,8 @@
 						"type": "text"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/movie/rentals/13/return-movie/",
+					"raw": "http://127.0.0.1:8000/api/movie/rentals/1/return-movie/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -872,7 +853,7 @@
 						"api",
 						"movie",
 						"rentals",
-						"13",
+						"1",
 						"return-movie",
 						""
 					]
@@ -892,7 +873,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDA0MTEzLCJqdGkiOiI3NGIwOWEyOGZiYmI0M2E3YjNlOGUwMjljMGViZjhkOSIsInVzZXJfaWQiOjN9.IUBPV6isvy07FSEGMJirVT9Ocd22R17R7QSpR-5d3rQ",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTAyNjYyLCJqdGkiOiJmYTcyNzI1NTdhMWE0Yzg5OTA3ZjY4Y2Q0NGRhZWJlZiIsInVzZXJfaWQiOjJ9.4D2_s6ypjciXlAn-tyXyAQLf1nH2Nv1GuPR128IFa9E",
 						"type": "text"
 					},
 					{
@@ -903,7 +884,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"movie\": 1\r\n}"
+					"raw": "{\r\n    \"movie\": 2\r\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/movie/purchases/",
@@ -937,7 +918,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTg2MDk5LCJqdGkiOiI0MGJjZTk5NTg2NmU0OTY5YTkwNjA2ZDk0ZjdkOTZjZiIsInVzZXJfaWQiOjJ9.CExmHAsprUvDAGqLmP4mCU55DjKYxohlf4qoca-DvO0",
 						"type": "text"
 					},
 					{
@@ -1020,7 +1001,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTQ1MTgyLCJqdGkiOiI1MWYwNmMwZDFiMTY0ZDg3YmYwYjUxZWM2YjI2NDNiMCIsInVzZXJfaWQiOjJ9.h4OXAI4PS-KfY9CWsby3zggHCkwYP0f67NprhhY-Z1E",
 						"type": "text"
 					},
 					{
@@ -1031,7 +1012,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"movie\": 3\r\n}"
+					"raw": "{\r\n    \"movie\": 1\r\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/movie/likes/",
@@ -1068,7 +1049,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTU1MTYwLCJqdGkiOiI3YWI3ZDkwNDBiNzg0NWU4ODdiZGE4MTdkOThkMjkxZiIsInVzZXJfaWQiOjJ9.1p0RN1dREJ7pDHzfUQfPxEjH1HZOH1TSnJJfKWyA0-Q",
 						"type": "text"
 					},
 					{
@@ -1113,7 +1094,7 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NDUxOTA0LCJqdGkiOiJkYWI3OTM3YTNkYzE0NjYzYjEwMDJhZDg3ZmE3ZDI3NSIsInVzZXJfaWQiOjN9.dylmtncuAAWHyw_TenAyRvl9Bj-R3-NiVSIryadrzF8",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE5NTM0NTYwLCJqdGkiOiI5MWVhNjFjOTQ1YmQ0YzM3OWU2MjE4ODRlOWYxMGE3OCIsInVzZXJfaWQiOjJ9.Ij983HuzT_wEfbKRCkEsjj7F7lrHfF23APMATyh35sY",
 						"type": "text"
 					},
 					{
