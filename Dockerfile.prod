@@ -12,8 +12,7 @@ EXPOSE 8000
 # install system-wide dependencies
 COPY ./requirements.txt /requirements.txt
 RUN apk update
-RUN apk add postgresql-client jpeg-dev libjpeg apt-transport-https \
-      rsync gettext libgettextpo-dev
+RUN apk add postgresql-client jpeg-dev libjpeg
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apk add nodejs
 RUN rm -rf /var/lib/apt/lists/
