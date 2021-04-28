@@ -36,8 +36,5 @@ RUN chown -R user:user /vol
 RUN chmod -R 755 /vol/web
 USER user
 
-# Install assets
-RUN python manage.py collectstatic --noinput --clear
-
 # Run application
 CMD gunicorn config.wsgi:application --bind 0.0.0.0:8000
