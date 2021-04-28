@@ -11,8 +11,6 @@ DEBUG = False
 SECRET_KEY = os.environ.get(
     'SECRET_KEY', default='django-insecure-&*)838bj5l=f*gx*wg5hk!)u)8qy+_(kru74si1ockw*rt-n2^')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 ALLOWED_HOSTS = ['*']
 
 if 'DATABASE_URL' in env:
@@ -36,11 +34,13 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Media files
 
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
 
 # Static files
 
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 WHITENOISE_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 
