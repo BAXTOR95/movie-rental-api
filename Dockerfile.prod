@@ -13,9 +13,7 @@ EXPOSE 8000
 COPY ./requirements.txt /requirements.txt
 RUN apk update
 RUN apk add postgresql-client jpeg-dev libjpeg
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apk add nodejs
-RUN rm -rf /var/lib/apt/lists/
+RUN apk add --update nodejs nodejs-npm
 RUN apk add --virtual .tmp-build-deps \
       gcc libc-dev linux-headers postgresql-dev musl-dev \
       zlib zlib-dev python3-dev libffi-dev openssl-dev cargo
