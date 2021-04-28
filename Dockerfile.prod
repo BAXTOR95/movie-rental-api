@@ -38,12 +38,6 @@ RUN yarn install
 # Compile static files
 RUN yarn build:prod
 
-# Have to move all static files other than index.html to root/
-# for whitenoise middleware
-WORKDIR /app/build
-
-RUN mkdir root && mv *.ico *.js *.json root
-
 WORKDIR /app
 
 # copy project

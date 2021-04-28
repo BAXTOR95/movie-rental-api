@@ -42,7 +42,7 @@ MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}'
 
-WHITENOISE_ROOT = os.path.join(BASE_DIR, 'build', 'root')
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'build', 'static')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
