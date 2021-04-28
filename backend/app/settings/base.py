@@ -239,7 +239,8 @@ EMAIL_USE_TLS = True
 # Corsheaders
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://django-rental-movie-app.herokuapp.com'
 ]
 
 # Appends slash to url if not provided
