@@ -8,7 +8,8 @@ env = os.environ.copy()
 
 DEBUG = False
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', default='django-insecure-&*)838bj5l=f*gx*wg5hk!)u)8qy+_(kru74si1ockw*rt-n2^')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
