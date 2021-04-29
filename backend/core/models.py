@@ -113,7 +113,8 @@ class Movie(models.Model):
     description = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True)
     genre = models.ManyToManyField('Genre')
-    image = models.ImageField(null=True, upload_to=movie_image_file_path)
+    image = models.ImageField(
+        null=True, upload_to=movie_image_file_path)
     stock = models.IntegerField()
     rental_price = models.DecimalField(max_digits=5, decimal_places=2)
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
