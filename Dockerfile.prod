@@ -8,7 +8,6 @@ ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE app.settings.production
 ENV WEB_CONCURRENCY 3
 ENV REACT_APP_DJANGO_SERVER https://django-rental-movie-app.herokuapp.com/api/
-ENV USE_S3 TRUE
 
 # install system-wide dependencies
 

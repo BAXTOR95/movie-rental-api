@@ -29,12 +29,5 @@ WORKDIR /app
 COPY ./backend /app
 
 # make static and media root
-RUN mkdir -p /vol/web/media
-RUN mkdir -p /vol/web/static
-RUN adduser -D user
-RUN chown -R user:user /vol
-RUN chmod -R 755 /vol/web
-USER user
-
-# Run application
-CMD gunicorn config.wsgi:application --bind 0.0.0.0:8000
+RUN mkdir -p /staticfiles
+RUN mkdir -p /mediafiles
