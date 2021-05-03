@@ -8,8 +8,7 @@ env = os.environ.copy()
 
 DEBUG = False
 
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY', default='django-insecure-&*)838bj5l=f*gx*wg5hk!)u)8qy+_(kru74si1ockw*rt-n2^')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -18,6 +17,16 @@ ALLOWED_HOSTS = ['*']
 if "DATABASE_URL" in env:
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600, ssl_require=True)
+
+# Cloudinary
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET')
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # # AWS
 

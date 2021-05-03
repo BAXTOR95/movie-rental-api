@@ -9,5 +9,8 @@ build:
     SECRET_KEY: $SECRET_KEY
     DATABASE_URL: $DATABASE_URL
     USE_S3: $USE_S3
+    CLOUD_NAME: $CLOUD_NAME
+    API_KEY: $API_KEY
+    API_SECRET: $API_SECRET
 run:
   web: python3 manage.py runserver 0.0.0.0:$PORT
