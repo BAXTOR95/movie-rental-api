@@ -123,7 +123,6 @@ const Auth = props => {
     });
 
     const [ isSignup, setIsSignup ] = useState(false);
-    const [ accountCreated, setAccountCreated ] = useState(false);
 
     const inputChangedHandler = (event, controlName) => {
         const updatedControls = updateObject(controls, {
@@ -177,7 +176,6 @@ const Auth = props => {
                 controls.password.value,
                 controls.re_password.value
             );
-            setAccountCreated(true);
         }
         resetFormValuesHandler();
     };

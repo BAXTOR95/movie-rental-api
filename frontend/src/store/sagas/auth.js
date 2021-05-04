@@ -61,6 +61,8 @@ export function* authUserSignUpSaga(action) {
         yield put(actions.logout());
         if (error.response.data.email) {
             yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.email[ 0 ], 'error')));
+        } else if (error.response.data.password) {
+            yield put(actions.enqueueSnackbar(getSnackbarData(`${ error.response.data.password[ 0 ] } ${ error.response.data.password[ 1 ] }`, 'error')));
         } else {
             yield put(actions.enqueueSnackbar(getSnackbarData(error.response.data.detail, 'error')));
         }
