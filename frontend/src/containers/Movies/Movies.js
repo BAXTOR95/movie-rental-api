@@ -64,9 +64,9 @@ const Typography = withStyles((theme) => ({
 
 export const Movies = props => {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const movieData = useSelector(state => state.movies.movieData);
-    const boughtMovies = useSelector(state => state.movies.boughtMovies);
-    const rentedMovies = useSelector(state => state.movies.rentedMovies);
+    const movieData = useSelector(state => state.movieDetails.movieData);
+    const boughtMovies = useSelector(state => state.boughtMovies.boughtMovies);
+    const rentedMovies = useSelector(state => state.rentedMovies.rentedMovies);
     const [ expanded, setExpanded ] = React.useState('panel1');
 
     const handleChange = (panel) => (event, newExpanded) => {

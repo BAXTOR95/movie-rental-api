@@ -131,8 +131,8 @@ const MovieDetail = (props) => {
 
     const dispatch = useDispatch();
 
-    const movieData = useSelector(state => state.movies.movieData);
-    const loading = useSelector(state => state.movies.loading);
+    const movieData = useSelector(state => state.movieDetails.movieData);
+    const loading = useSelector(state => state.movieDetails.loading);
     const likedMovies = useSelector(state => state.movies.likedMovies);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
@@ -141,7 +141,6 @@ const MovieDetail = (props) => {
     const onDislikeMovie = useCallback(() => dispatch(actions.dislikeMovie(movieId)), [ dispatch, movieId ]);
     const onRentMovie = useCallback(() => dispatch(actions.rentMovie(movieId)), [ dispatch, movieId ]);
     const onBuyMovie = useCallback(() => dispatch(actions.buyMovie(movieId)), [ dispatch, movieId ]);
-    // const onReturnRentedMovies = useCallback((movieId) => dispatch(actions.returnRentedMovies(movieId)), [ dispatch ]);
 
     const classes = useStyles();
 

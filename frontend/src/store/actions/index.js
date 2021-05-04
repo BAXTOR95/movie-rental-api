@@ -31,10 +31,6 @@ export {
     fetchMoviesStart,
     fetchMoviesSuccess,
     fetchMoviesFail,
-    fetchMovieDetails,
-    fetchMovieDetailsStart,
-    fetchMovieDetailsSuccess,
-    fetchMovieDetailsFail,
     likeMovie,
     likeMovieStart,
     likeMovieSuccess,
@@ -45,8 +41,18 @@ export {
     dislikeMovieFail,
     fetchLikedMovies,
     fetchLikedMoviesStart,
-    fetchBoughtMoviesSuccess,
-    fetchBoughtMoviesFail,
+    fetchLikedMoviesSuccess,
+    fetchLikedMoviesFail
+} from './movies';
+
+export {
+    fetchMovieDetails,
+    fetchMovieDetailsStart,
+    fetchMovieDetailsSuccess,
+    fetchMovieDetailsFail
+} from './movieDetails';
+
+export {
     rentMovie,
     rentMovieStart,
     rentMovieSuccess,
@@ -58,16 +64,19 @@ export {
     fetchRentedMovies,
     fetchRentedMoviesStart,
     fetchRentedMoviesSuccess,
-    fetchRentedMoviesFail,
+    fetchRentedMoviesFail
+} from './rentedMovies';
+
+export {
     buyMovie,
     buyMovieStart,
     buyMovieSuccess,
     buyMovieFail,
+    fetchBoughtMoviesSuccess,
+    fetchBoughtMoviesFail,
     fetchBoughtMovies,
-    fetchBoughtMoviesStart,
-    fetchLikedMoviesSuccess,
-    fetchLikedMoviesFail
-} from './movies';
+    fetchBoughtMoviesStart
+} from './boughtMovies';
 
 export {
     closeSnackbar,

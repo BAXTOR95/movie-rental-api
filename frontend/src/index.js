@@ -12,6 +12,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import authReducer from './store/reducers/auth';
 import moviesReducer from './store/reducers/movies';
+import movieDetailsReducer from './store/reducers/movieDetails';
+import rentedMoviesReducer from './store/reducers/rentedMovies';
+import boughtMoviesReducer from './store/reducers/boughtMovies';
 import snackbarReducer from './store/reducers/snackbar';
 import { watchAuth, watchMovies } from './store/sagas';
 
@@ -20,6 +23,9 @@ const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDU
 const rootReducer = combineReducers({
   auth: authReducer,
   movies: moviesReducer,
+  movieDetails: movieDetailsReducer,
+  rentedMovies: rentedMoviesReducer,
+  boughtMovies: boughtMoviesReducer,
   snackbar: snackbarReducer
 });
 

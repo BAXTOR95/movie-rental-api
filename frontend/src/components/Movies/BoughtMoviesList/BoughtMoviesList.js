@@ -52,7 +52,7 @@ const BoughtMoviesList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const boughtMovies = useSelector(state => state.movies.boughtMovies);
+    const boughtMovies = useSelector(state => state.boughtMovies.boughtMovies);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const onFetchBoughtMovies = useCallback(() => dispatch(actions.fetchBoughtMovies()), [ dispatch ]);

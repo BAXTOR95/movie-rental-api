@@ -22,7 +22,6 @@ import {
     Switch,
 } from '@material-ui/core';
 import KeyboardReturnOutlinedIcon from '@material-ui/icons/KeyboardReturnOutlined';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import moment from 'moment';
 
 import * as actions from '../../../store/actions/index';
@@ -210,7 +209,7 @@ const RentedMoviesList = () => {
 
     const dispatch = useDispatch();
 
-    const rows = useSelector(state => state.movies.rentedMovies);
+    const rows = useSelector(state => state.rentedMovies.rentedMovies);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
     const onFetchRentedMovies = useCallback(() => dispatch(actions.fetchRentedMovies()), [ dispatch ]);
