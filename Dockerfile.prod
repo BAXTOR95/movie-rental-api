@@ -38,7 +38,6 @@ WORKDIR /app
 
 # copy project
 COPY ./backend /app
-COPY ./backend/scripts/ /app/
 
 # make static and media root
 RUN mkdir -p /vol/web/media && \
@@ -48,6 +47,3 @@ RUN mkdir -p /vol/web/media && \
 RUN python manage.py collectstatic --noinput --clear
 
 EXPOSE $PORT
-
-RUN ["chmod", "+x", "/app/scripts/entrypoint-prod.sh"]
-ENTRYPOINT ["/app/scripts/entrypoint-prod.sh"]
