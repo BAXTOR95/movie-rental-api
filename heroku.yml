@@ -13,4 +13,4 @@ build:
     API_KEY: $API_KEY
     API_SECRET: $API_SECRET
 run:
-  web: python3 manage.py runserver 0.0.0.0:$PORT
+  web: gunicorn app.wsgi --log-file -
