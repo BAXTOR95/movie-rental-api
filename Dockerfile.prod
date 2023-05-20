@@ -8,12 +8,13 @@ ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE app.settings.production
 ENV WEB_CONCURRENCY 3
 ENV REACT_APP_DJANGO_SERVER https://django-rental-movie-app.herokuapp.com/api/
+ENV NODE_OPTIONS --openssl-legacy-provider
 
 # install system-wide dependencies
 
 # Install curl, node, & yarn
 RUN apk update
-RUN apk add --update bash curl nodejs yarn
+RUN apk add --update bash curl nodejs=15.14.0 yarn
 RUN apk add postgresql-client jpeg-dev libjpeg
 RUN apk add --virtual .tmp-build-deps \
       gcc libc-dev linux-headers postgresql-dev musl-dev \
