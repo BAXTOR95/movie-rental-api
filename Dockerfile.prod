@@ -28,8 +28,7 @@ RUN pip install --upgrade pip && \
     apk del .tmp-build-deps
 
 # copy front end to compile it
-COPY ./frontend ./frontend
-WORKDIR /app/frontend
+COPY ./frontend /app
 # Install front-end dependencies.
 RUN yarn install && \
     yarn build:prod
@@ -38,8 +37,8 @@ RUN yarn install && \
 WORKDIR /app
 
 # copy project
-COPY ./backend ./backend
-COPY ./backend/scripts/ ./scripts/
+COPY ./backend /app
+COPY ./backend/scripts/ /app/
 
 # make static and media root
 RUN mkdir -p /vol/web/media && \
