@@ -12,6 +12,8 @@ db.sqlite3-journal
 # persisted postgres data
 postgres_data/
 
+.venv
+
 __pycache__
 
 *.log

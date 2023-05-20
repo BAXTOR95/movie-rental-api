@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
         height: '50% !important'
     },
     gridListTitleBar: {
-        backgroundColor: 'rgba(255, 255, 255, .3)'
+        backgroundColor: 'rgba(206, 206, 206, .8)'
     },
     gridList: {
         width: "100%",

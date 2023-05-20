@@ -8,6 +8,7 @@ services:
       - '8000:8000'
     volumes:
       - ./backend:/app
+      - media_volume:/vol/web/media/
     command: >
       sh -c "python manage.py wait_for_db &&
               python manage.py makemigrations core &&
@@ -21,5 +22,9 @@ services:
   db:
     image: postgres:10-alpine
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - db_data_volume:/var/lib/postgresql/data
     env_file: .env.db
+
+volumes:
+  db_data_volume:
+  media_volume:

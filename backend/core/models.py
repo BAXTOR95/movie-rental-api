@@ -1,6 +1,7 @@
 import uuid
 import os
 import logging
+from decimal import Decimal
 from django.db import models
 from django.db.models import F
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
@@ -77,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('name', 'is_staff')
+    REQUIRED_FIELDS = ['name', 'is_staff']
 
     def get_full_name(self):
         return self.name
@@ -152,9 +153,9 @@ class Rental(models.Model):
     date_returned = models.DateTimeField(
         auto_now=False, null=True)
     daily_rental_fee = models.DecimalField(
-        max_digits=5, decimal_places=2, default=0)
+        max_digits=5, decimal_places=2, default=Decimal('0.00'))
     rental_debt = models.DecimalField(
-        max_digits=5, decimal_places=2, default=0)
+        max_digits=5, decimal_places=2, default=Decimal('0.00'))
 
     @property
     def rental_debt(self):
@@ -171,8 +172,7 @@ class Rental(models.Model):
                 self.date_returned, timezone.get_fixed_timezone(60)
             )
         days_in_debt = local_dr-local_do
-        debt_to_pay = days_in_debt.days * \
-            self.daily_rental_fee
+        debt_to_pay = days_in_debt.days * self.daily_rental_fee
         # if rental debt == 0 set it to rental price
         if debt_to_pay == 0:
             debt_to_pay = self.movie.rental_price
@@ -194,14 +194,14 @@ class Rental(models.Model):
         # if movie returned, calculate the debt
         if self.date_returned:
             # Increment stock count from movie
-            Movie.objects.filter(pk=self.movie_id).update(
+            Movie.objects.filter(pk=self.movie.id).update(
                 stock=F('stock')+1)
             logger.debug(
                 f'Movie id={self.movie.id} returned on {self.date_returned} ' +
                 f'by user id={self.user.id} with a debt of {self.rental_debt}')
         elif not self.pk:
             # Decrement stock count from movie
-            Movie.objects.filter(pk=self.movie_id).update(stock=F('stock')-1)
+            Movie.objects.filter(pk=self.movie.id).update(stock=F('stock')-1)
         super(Rental, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -221,7 +221,7 @@ class Purchase(models.Model):
     )
     date_bought = models.DateTimeField(default=timezone.now, blank=True)
     purchase_price = models.DecimalField(
-        max_digits=5, decimal_places=2, default=0)
+        max_digits=5, decimal_places=2, default=Decimal('0.00'))
 
     class Meta:
         constraints = [
@@ -237,7 +237,7 @@ class Purchase(models.Model):
             self.purchase_price = self.movie.sale_price
         if not self.pk:
             # Decrement stock count from movie
-            Movie.objects.filter(pk=self.movie_id).update(stock=F('stock')-1)
+            Movie.objects.filter(pk=self.movie.id).update(stock=F('stock')-1)
         logger.debug(
             f'User id={self.user.id} bought the Movie id={self.movie.id} ' +
             f'on {self.date_bought} for a price={self.purchase_price}')
