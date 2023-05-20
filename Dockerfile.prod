@@ -10,49 +10,45 @@ ENV WEB_CONCURRENCY 3
 ENV REACT_APP_DJANGO_SERVER https://django-rental-movie-app.herokuapp.com/api/
 ENV NODE_OPTIONS --openssl-legacy-provider
 
-# install system-wide dependencies
-
-# Install curl, node, & yarn
-RUN apk update
-RUN apk add --update bash curl nodejs=15.14.0 yarn
-RUN apk add postgresql-client jpeg-dev libjpeg
-RUN apk add --virtual .tmp-build-deps \
+# Install system dependencies
+RUN apk update && \
+    apk add --update bash curl nodejs yarn postgresql-client jpeg-dev libjpeg && \
+    apk add --virtual .tmp-build-deps \
       gcc libc-dev linux-headers postgresql-dev musl-dev \
       zlib zlib-dev python3-dev libffi-dev openssl-dev cargo
-
-# Install Python dependencies
-COPY ./requirements.txt /requirements.txt
-RUN pip install --upgrade pip
-RUN pip install -r /requirements.txt
-
-# Remove unnecessary dependencies
-RUN apk del .tmp-build-deps
 
 # set work directory
 RUN mkdir /app
 WORKDIR /app
 
-# copy front end to compile it
-COPY ./frontend /app
-# Install front-end dependencies.
-RUN yarn install
-# Compile static files
-RUN yarn build:prod
+# Install Python dependencies
+COPY ./requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt && \
+    apk del .tmp-build-deps
 
+# copy front end to compile it
+COPY ./frontend ./frontend
+WORKDIR /app/frontend
+# Install front-end dependencies.
+RUN yarn install && \
+    yarn build:prod
+
+# back to the main directory
 WORKDIR /app
 
 # copy project
-COPY ./backend /app
-COPY ./backend/scripts/ /app/
+COPY ./backend ./backend
+COPY ./backend/scripts/ ./scripts/
 
 # make static and media root
-RUN mkdir -p /vol/web/media
-RUN mkdir -p /vol/web/static
+RUN mkdir -p /vol/web/media && \
+    mkdir -p /vol/web/static
 
 # Install assets
 RUN python manage.py collectstatic --noinput --clear
 
 EXPOSE $PORT
 
-RUN ["chmod", "+x", "/app/entrypoint-prod.sh"]
-ENTRYPOINT ["/app/entrypoint-prod.sh"]
+RUN ["chmod", "+x", "/app/scripts/entrypoint-prod.sh"]
+ENTRYPOINT ["/app/scripts/entrypoint-prod.sh"]
