@@ -9,3 +9,8 @@ DEBUG = True
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 ALLOWED_HOSTS = ['*']
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}

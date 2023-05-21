@@ -9,11 +9,10 @@ ENV PYTHONUNBUFFERED 1
 # install system-wide dependencies
 COPY ./requirements.txt /requirements.txt
 RUN apk update
-RUN apk add postgresql-client jpeg-dev libjpeg
+RUN apk add postgresql-client jpeg-dev libjpeg graphviz graphviz-dev
 RUN apk add --virtual .tmp-build-deps \
       gcc libc-dev linux-headers postgresql-dev musl-dev \
-      zlib zlib-dev python3-dev libffi-dev openssl-dev cargo \
-      graphviz graphviz-dev
+      zlib zlib-dev python3-dev libffi-dev openssl-dev cargo
 RUN pip install --upgrade pip
 
 # install project dependencies

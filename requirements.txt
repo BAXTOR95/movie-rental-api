@@ -19,5 +19,6 @@ gunicorn
 
 django-extensions
 pygraphviz
+pydot
 
 flake8>=3.9.1,<4.0.0
