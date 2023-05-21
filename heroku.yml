@@ -13,4 +13,4 @@ build:
     API_KEY: $API_KEY
     API_SECRET: $API_SECRET
 run:
-  web: gunicorn app.wsgi --bind 0.0.0.0:8000 --log-file gunicorn.log
+  web: gunicorn app.wsgi --bind 0.0.0.0:$PORT --log-file gunicorn.log

@@ -3,12 +3,12 @@ version: '3.7'
 services:
   web:
     build: .
-    command: gunicorn app.wsgi --bind 0.0.0.0:8000 --log-file gunicorn.log
+    command: gunicorn app.wsgi --bind 0.0.0.0:$PORT --log-file gunicorn.log
     volumes:
       - static_volume:/app/static
       - media_volume:/vol/web/media/
     expose:
-      - 8000
+      - $PORT
     env_file: .env.prod
     depends_on:
       - db
