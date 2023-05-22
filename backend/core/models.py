@@ -158,21 +158,25 @@ class Rental(models.Model):
         max_digits=5, decimal_places=2, default=Decimal('0.00'))
 
     @property
-    def rental_debt(self):
+    def calculated_rental_debt(self):
         """Returns the amount to pay for the rented movie
         """
         local_do = timezone.localtime(
             self.date_out, timezone.get_fixed_timezone(60)
         )
+        print("local_do", local_do)
         local_dr = timezone.localtime(
             timezone.now(), timezone.get_fixed_timezone(60)
         )
+        print("local_dr", local_dr)
         if self.date_returned:
             local_dr = timezone.localtime(
                 self.date_returned, timezone.get_fixed_timezone(60)
             )
         days_in_debt = local_dr-local_do
+        print("days_in_debt", days_in_debt)
         debt_to_pay = days_in_debt.days * self.daily_rental_fee
+        print("debt_to_pay", debt_to_pay)
         # if rental debt == 0 set it to rental price
         if debt_to_pay == 0:
             debt_to_pay = self.movie.rental_price
@@ -188,6 +192,8 @@ class Rental(models.Model):
         ]
 
     def save(self, *args, **kwargs):
+        # Calculate rental debt
+        self.rental_debt = str(self.calculated_rental_debt)
         # if rental fee == 0 set it to rental price
         if float(self.daily_rental_fee) == 0:
             self.daily_rental_fee = self.movie.rental_price
@@ -196,6 +202,8 @@ class Rental(models.Model):
             # Increment stock count from movie
             Movie.objects.filter(pk=self.movie.id).update(
                 stock=F('stock')+1)
+            # Calculate rental debt
+            # save the calculated debt to the rental_debt field
             logger.debug(
                 f'Movie id={self.movie.id} returned on {self.date_returned} ' +
                 f'by user id={self.user.id} with a debt of {self.rental_debt}')
