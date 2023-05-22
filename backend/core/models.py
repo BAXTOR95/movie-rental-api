@@ -164,19 +164,15 @@ class Rental(models.Model):
         local_do = timezone.localtime(
             self.date_out, timezone.get_fixed_timezone(60)
         )
-        print("local_do", local_do)
         local_dr = timezone.localtime(
             timezone.now(), timezone.get_fixed_timezone(60)
         )
-        print("local_dr", local_dr)
         if self.date_returned:
             local_dr = timezone.localtime(
                 self.date_returned, timezone.get_fixed_timezone(60)
             )
         days_in_debt = local_dr-local_do
-        print("days_in_debt", days_in_debt)
         debt_to_pay = days_in_debt.days * self.daily_rental_fee
-        print("debt_to_pay", debt_to_pay)
         # if rental debt == 0 set it to rental price
         if debt_to_pay == 0:
             debt_to_pay = self.movie.rental_price
